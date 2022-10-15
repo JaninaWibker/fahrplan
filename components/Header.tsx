@@ -20,7 +20,7 @@ const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) => {
         <div className="grow text-2xl font-semibold text-center leading-[calc(36px+2rem)]">
           {date.toLocaleDateString('de-DE', { weekday: 'long' })} - {date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' })}
         </div>
-        <div className={'p-4 rounded-full ' + (canPrev ? 'text-black' : 'text-slate-300')} onClick={canNext ? onNext : undefined}><ChevronRight style={{ width: 36, height: 36 }} /></div>
+        <div className={'p-4 rounded-full ' + (canNext ? 'text-black' : 'text-slate-300')} onClick={canNext ? onNext : undefined}><ChevronRight style={{ width: 36, height: 36 }} /></div>
       </div>
     </div>
   )
