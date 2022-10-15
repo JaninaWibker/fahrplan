@@ -1,6 +1,7 @@
 import React from 'react'
 import ChevronLeft from '../icons/ChevronLeft'
 import ChevronRight from '../icons/ChevronRight'
+import { formatDate } from '../utils/date'
 
 type HeaderProps = {
   date: Date,
@@ -10,6 +11,7 @@ type HeaderProps = {
   canNext: boolean
 }
 
+// TODO: add jump to "today" button if not on current day
 const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) => {
   return (
     <div className="">
@@ -18,7 +20,7 @@ const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) => {
       <div className="flex">
         <div className={'p-4 rounded-full ' + (canPrev ? 'text-black' : 'text-slate-300')} onClick={canPrev ? onPrev : undefined}><ChevronLeft style={{ width: 36, height: 36 }} /></div>
         <div className="grow text-2xl font-semibold text-center leading-[calc(36px+2rem)]">
-          {date.toLocaleDateString('de-DE', { weekday: 'long' })} - {date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' })}
+          {date.toLocaleDateString('de-DE', { weekday: 'long' })} - {formatDate(date)}
         </div>
         <div className={'p-4 rounded-full ' + (canNext ? 'text-black' : 'text-slate-300')} onClick={canNext ? onNext : undefined}><ChevronRight style={{ width: 36, height: 36 }} /></div>
       </div>

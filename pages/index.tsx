@@ -1,9 +1,11 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
 import { useState } from 'react'
+import Head from 'next/head'
+import type { NextPage } from 'next'
+
 import Calendar from '../components/Calendar'
 import Header from '../components/Header'
 import { isEarlierDay, compareByDay, clampDay } from '../utils/date'
+import type { Event } from '../utils/ical'
 
 // TODO: getStaticProps and iCAL parsing
 const events = [
@@ -30,14 +32,22 @@ const events = [
   }
 ]
 
-const Home: NextPage = () => {
+const calculateSomeStateThings = (events: Event[], currentDay: Date) => {
   const sortedDates = events.flatMap(event => [event.start, event.end]).sort(compareByDay)
   const startingDay = sortedDates[0]
   const endingDay = sortedDates[sortedDates.length - 1]
-  const currentDay = new Date('2022-10-16T00:00:00')
-  const initialDate = clampDay(startingDay, endingDay, currentDay)
+  const initialDay = clampDay(startingDay, endingDay, currentDay)
 
-  const [date, setDate] = useState(initialDate)
+  return {
+    startingDay,
+    endingDay,
+    initialDay
+  }
+}
+
+
+  const { startingDay, endingDay, initialDay } = calculateSomeStateThings(events, new Date('2022-10-16T00:00:00'))
+  const [date, setDate] = useState(initialDay)
 
   const canPrev = isEarlierDay(startingDay, date) // startingDate < date
   const canNext = isEarlierDay(date, endingDay) // date < endingDate

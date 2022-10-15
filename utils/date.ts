@@ -14,11 +14,13 @@ const compareByDay = (a: Date, b: Date) => {
 
 const clampDay = (min: Date, max: Date, day: Date) => {
   const lowerBound = compareByDay(min, day) > 0 ? min : day
-  const upperBound = compareByDay(lowerBound, max) < 0 ? max : lowerBound
+  const upperBound = compareByDay(lowerBound, max) < 0 ? lowerBound : max
   return upperBound
 }
 
 const formatTime = (date: Date) => date.toLocaleTimeString('de-DE', { hour: 'numeric', minute: 'numeric' })
+
+const formatDate = (date: Date) => date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' })
 
 export {
   isSameDay,
@@ -26,5 +28,6 @@ export {
   isLaterDay,
   compareByDay,
   clampDay,
-  formatTime
+  formatTime,
+  formatDate
 }
