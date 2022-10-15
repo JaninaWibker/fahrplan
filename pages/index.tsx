@@ -1,7 +1,33 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
+import Calendar from '../components/Calendar'
 import Header from '../components/Header'
+
+// TODO: getStaticProps and iCAL parsing
+const events = [
+  {
+    id: '1',
+    title: 'Begrüßungsveranstaltung',
+    location: 'Audimax',
+    start: new Date('2022-10-01T09:30:00'),
+    end: new Date('2022-10-01T12:00:00')
+  },
+  {
+    id: '2',
+    title: 'Intro / Kennenlernen',
+    location: 'Irgendwo',
+    start: new Date('2022-10-01T12:00:00'),
+    end: new Date('2022-10-01T18:00:00')
+  },
+  {
+    id: '3',
+    title: 'Grillen',
+    location: 'Irgendwo',
+    start: new Date('2022-10-01T18:00:00'),
+    end: new Date('2022-10-01T22:00:00')
+  }
+]
 
 const Home: NextPage = () => {
   // TODO: enforced start and end date
@@ -28,6 +54,7 @@ const Home: NextPage = () => {
         </Head>
 
         <Header date={date} onPrev={prev} onNext={next} canPrev={true} canNext={true} />
+        <Calendar events={events} />
       </div>
   )
 }
