@@ -5,32 +5,17 @@ import type { NextPage } from 'next'
 import Calendar from '../components/Calendar'
 import Header from '../components/Header'
 import { isEarlierDay, compareByDay, clampDay } from '../utils/date'
-import type { Event } from '../utils/ical'
+import { load } from '../utils/ical'
+import type { Event, SerializedEvent } from '../utils/ical'
 
-// TODO: getStaticProps and iCAL parsing
-const events = [
-  {
-    id: '1',
-    title: 'Begrüßungsveranstaltung',
-    location: 'Audimax',
-    start: new Date('2022-10-17T09:30:00'),
-    end: new Date('2022-10-17T12:00:00')
-  },
-  {
-    id: '2',
-    title: 'Intro / Kennenlernen',
-    location: 'Irgendwo',
-    start: new Date('2022-10-17T12:00:00'),
-    end: new Date('2022-10-17T18:00:00')
-  },
-  {
-    id: '3',
-    title: 'Grillen',
-    location: 'Irgendwo',
-    start: new Date('2022-10-17T18:00:00'),
-    end: new Date('2022-10-17T22:00:00')
+export const getStaticProps = async () => {
+  const serializedEvents = await load('http://localhost:3000/basic.ics')
+  return {
+    props: {
+      serializedEvents
+    }
   }
-]
+}
 
 const calculateSomeStateThings = (events: Event[], currentDay: Date) => {
   const sortedDates = events.flatMap(event => [event.start, event.end]).sort(compareByDay)
@@ -45,6 +30,12 @@ const calculateSomeStateThings = (events: Event[], currentDay: Date) => {
   }
 }
 
+const Home: NextPage<{ serializedEvents: SerializedEvent[] }> = ({ serializedEvents }) => {
+  const events = serializedEvents.map(event => ({
+    ...event,
+    start: new Date(event.start),
+    end: new Date(event.end),
+  }))
 
   const { startingDay, endingDay, initialDay } = calculateSomeStateThings(events, new Date('2022-10-16T00:00:00'))
   const [date, setDate] = useState(initialDay)

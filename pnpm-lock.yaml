@@ -7,6 +7,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.38.1
   '@typescript-eslint/parser': ^5.38.1
   autoprefixer: ^10.4.12
+  cal-parser: ^1.0.2
   eslint: 8.24.0
   eslint-config-next: 12.3.1
   eslint-config-standard: ^17.0.0
@@ -23,6 +24,7 @@ specifiers:
   typescript: 4.8.4
 
 dependencies:
+  cal-parser: 1.0.2
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -605,6 +607,13 @@ packages:
     dependencies:
       semver: 7.3.8
     dev: true
+
+  /cal-parser/1.0.2:
+    resolution: {integrity: sha512-wlQwcF0fl4eLclyGdncF9rcNNq0ipRYZGagG6h3LVgRXvCWE1fdMUaCLXwfC9YWoz9jKKbjQAq7TpO2Y3yrvmA==}
+    dependencies:
+      ical-date-parser: 4.0.0
+      rrule: 2.7.1
+    dev: false
 
   /call-bind/1.0.2:
     resolution: {integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==}
@@ -1462,6 +1471,10 @@ packages:
       function-bind: 1.1.1
     dev: true
 
+  /ical-date-parser/4.0.0:
+    resolution: {integrity: sha512-XRCK/FU1akC2ZaJOdKIeZI6BLLgzWUuE0pegSrrkEva89GOan5mNkLVqCU4EMhCJ9nkG5TLWdMXrVX1fNAkFzw==}
+    dev: false
+
   /ignore/5.2.0:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
     engines: {node: '>= 4'}
@@ -2124,6 +2137,12 @@ packages:
     dependencies:
       glob: 7.2.3
     dev: true
+
+  /rrule/2.7.1:
+    resolution: {integrity: sha512-4p20u/1U7WqR3Nb1hOUrm0u1nSI7sO93ZUVZEZ5HeF6Gr5OlJuyhwEGRvUHq8ZfrPsq5gfa5b9dqnUs/kPqpIw==}
+    dependencies:
+      tslib: 2.4.0
+    dev: false
 
   /run-parallel/1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
