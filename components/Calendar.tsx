@@ -1,9 +1,16 @@
 import React from 'react'
 import type { Event } from '../utils/ical'
 import { isSameDay, formatTime } from '../utils/date'
+import Modal from './Modal'
+import EventDisplay from './EventDisplay'
 
 const HEIGHT_PER_HOUR = 48
 const MARGIN_EVENTS = 2
+
+const COLORS_PER_PRIORITY: Record<number, string> = {
+  1: 'bg-blue-400',
+  2: 'bg-blue-300',
+}
 
 /**
  * The starting position is calculated by the difference between the starting time and the start of the event
@@ -14,14 +21,14 @@ const calculateStartingPositionFromDate = (startingTime: Date, date: Date) => {
   return hoursFromStart * HEIGHT_PER_HOUR
 }
 
+const calculateDurationFromDate = (start: Date, end: Date) =>
+  ((end.getHours() || 24) - start.getHours()) + (end.getMinutes() - start.getMinutes()) / 60
+
 /**
  * The height of an event is calculated by its length and the height of an hour
  */
-const calculateHeightFromDate = (start: Date, end: Date) => {
-  const hours = (end.getHours() - start.getHours()) + (end.getMinutes() - start.getMinutes()) / 60
-
-  return hours * HEIGHT_PER_HOUR
-}
+const calculateHeightFromDate = (start: Date, end: Date) =>
+  calculateDurationFromDate(start, end) * HEIGHT_PER_HOUR
 
 /**
  * this takes the earliest hour and rounds it down (meaning 9:30 becomes 9:00)
@@ -70,29 +77,36 @@ const Calendar = ({ events, date }: CalendarProps) => {
   const startingTime = hours[0]
   const currentEvents = events.filter(event => isSameDay(event.start, date) || (isSameDay(event.end, date) && event.end.getHours() !== 0 && event.end.getMinutes() !== 0))
 
+  // TODO: better styles for overlapping events
   return (
     <div className="w-full flex overflow-y-scroll" style={{ height: 'calc(100vh - 140px' }}>
-      <div className="w-16 h-fit">
+      <div className="w-14 h-fit">
         {hours.map((hour) => (
-          <div key={hour.toISOString()} className="flex items-center justify-end text-right font-medium" style={{ height: HEIGHT_PER_HOUR }}>
+          <div key={hour.toISOString()} className="flex items-center justify-end text-right font-medium text-sm" style={{ height: HEIGHT_PER_HOUR }}>
             <div className="px-2">{formatTime(hour)}</div>
           </div>
         ))}
       </div>
       <div className="grow relative">
         {currentEvents.map((event) => (
-          <div className="absolute rounded-lg bg-blue-300 w-full px-2 py-1" key={event.uuid} style={{
-            top: calculateStartingPositionFromDate(startingTime, event.start) + MARGIN_EVENTS,
-            height: calculateHeightFromDate(event.start, event.end) - 2 * MARGIN_EVENTS
-          }}>
-            <div className="text-white">{event.title}</div>
-            <div className="text-white text-sm">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
-            <div className="text-white text-sm">{event.short_location}</div>
+          <Modal key={event.uuid} title={event.title} trigger={(
+            <div className={`absolute rounded-lg drop-shadow-md px-2 py-1 ${COLORS_PER_PRIORITY[event.priority]}`} style={{
+              left: 16 * (event.priority - 1),
+              width: `calc(100% - ${8 * (event.priority - 1)}px)`,
+              top: calculateStartingPositionFromDate(startingTime, event.start) + MARGIN_EVENTS,
+              height: calculateHeightFromDate(event.start, event.end) - 2 * MARGIN_EVENTS
+            }}>
+              <div className="text-white text-sm truncate">{event.title}</div>
+              <div className="text-white text-xs">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
+              {calculateDurationFromDate(event.start, event.end) > 1 ? <div className="text-white text-xs truncate">{event.short_location}</div> : null}
 
-          </div>
+            </div>
+          )}>
+            <EventDisplay event={event} />
+          </Modal>
         ))}
       </div>
-      <div className="w-16 h-fit"></div>
+      <div className="w-14 h-fit"></div>
     </div>
   )
 }

@@ -80,9 +80,6 @@ const shortenLocation = (location: string) => {
   return location.split(',')[0]
 }
 
-// https://calendar.google.com/calendar/ical/903e162de81a5fbd1a1777760f8858ff6c2555398b8a1649f7bc86ccd6e2845a%40group.calendar.google.com/public/basic.ics
-// localhost:3000/public/basic.ics
-
 const load = (url: string): Promise<SerializedEvent[]> => fetch(url)
   .then(res => res.text())
   .then(text => {
