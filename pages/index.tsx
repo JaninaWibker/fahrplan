@@ -5,7 +5,7 @@ import type { NextPage } from 'next'
 import Calendar from '../components/Calendar'
 import Header from '../components/Header'
 import { isEarlierDay, compareByDay, clampDay } from '../utils/date'
-import { load } from '../utils/ical'
+import { load, deserialize } from '../utils/ical'
 import type { Event, SerializedEvent } from '../utils/ical'
 
 export const getStaticProps = async () => {
@@ -31,11 +31,7 @@ const calculateSomeStateThings = (events: Event[], currentDay: Date) => {
 }
 
 const Home: NextPage<{ serializedEvents: SerializedEvent[] }> = ({ serializedEvents }) => {
-  const events = serializedEvents.map(event => ({
-    ...event,
-    start: new Date(event.start),
-    end: new Date(event.end),
-  }))
+  const events = deserialize(serializedEvents)
 
   const { startingDay, endingDay, initialDay } = calculateSomeStateThings(events, new Date('2022-10-16T00:00:00'))
   const [date, setDate] = useState(initialDay)
