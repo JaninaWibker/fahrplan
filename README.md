@@ -2,7 +2,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+Create a `.env` file which sets the following environment variables:
+
+```bash
+ICAL_URL="<url of ical file>"
+NEXT_PUBLIC_BASE_PATH="<base path, e.g. /fahrplan or />"
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -17,6 +24,8 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+For a production build do `npm run build && npm run export`. Your generated static site will be in the `out` directory.
 
 ## Learn More
 
