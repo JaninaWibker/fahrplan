@@ -15,6 +15,10 @@ jobs:
         with:
           version: 7
 
+      - name: Create temporary .env file
+        run: |
+          echo "ICAL_URL=https://raw.githubusercontent.com/JannikWibker/fahrplan/main/public/example.ics" > .env
+
       - run: pnpm install
-      - run: pnpm build
       - run: pnpm lint
+      - run: pnpm build
