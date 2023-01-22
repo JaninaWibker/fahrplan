@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import type { Event } from '../utils/ical'
 import { isSameDay, formatTime } from '../utils/date'
 import Modal from './Modal'
@@ -10,6 +10,25 @@ const MARGIN_EVENTS = 2
 const COLORS_PER_PRIORITY: Record<number, string> = {
   1: 'bg-blue-400',
   2: 'bg-blue-300',
+}
+
+const useTime = (refreshTime = 1000): [Date, true] | [undefined, false] => {
+  const [time, setTime] = useState<{ ready: false, time: undefined } | { ready: true, time: Date }>({ ready: false, time: undefined })
+  const interval = useRef<number | undefined>(undefined)
+
+  useEffect(() => {
+    setTime({ ready: true, time: new Date() })
+
+    interval.current = setInterval(() => {
+      setTime({ ready: true, time: new Date() })
+    }, refreshTime) as unknown as number
+
+    return () => {
+      clearInterval(interval.current)
+    }
+  }, [refreshTime, setTime])
+
+  return [time.time, time.ready] as [Date, true] | [undefined, false]
 }
 
 /**
@@ -71,26 +90,27 @@ type CalendarProps = {
   events: Event[]
 }
 
-// TODO: display the current time
 const Calendar = ({ events, date }: CalendarProps) => {
   const hours = calculateHoursFromEvents(events)
   const startingTime = hours[0]
   const currentEvents = events.filter(event => isSameDay(event.start, date) || (isSameDay(event.end, date) && event.end.getHours() !== 0 && event.end.getMinutes() !== 0))
+  const [time, ready] = useTime()
 
   // TODO: better styles for overlapping events
   return (
-    <div className="w-full flex overflow-y-scroll" style={{ height: 'calc(100vh - 140px' }}>
+    <div className="w-full flex relative overflow-y-scroll" style={{ height: 'calc(100vh - 140px)' }}>
+      {ready ? <div className={`z-1 h-1 w-full absolute ${isSameDay(date, time) ? 'bg-red-400' : 'bg-gray-200'}`} style={{ top: calculateStartingPositionFromDate(startingTime, time) - 2 }}></div> : null}
       <div className="w-14 h-fit">
         {hours.map((hour) => (
-          <div key={hour.toISOString()} className="flex items-center justify-end text-right font-medium text-sm" style={{ height: HEIGHT_PER_HOUR }}>
-            <div className="px-2">{formatTime(hour)}</div>
+          <div key={hour.toISOString()} className="flex items-center justify-end text-right font-medium text-sm z-2 relative" style={{ height: HEIGHT_PER_HOUR }}>
+            <div className="px-1 mx-1 bg-white">{formatTime(hour)}</div>
           </div>
         ))}
       </div>
       <div className="grow relative">
         {currentEvents.map((event) => (
           <Modal key={event.uuid} title={event.title} trigger={(
-            <div className={`absolute rounded-lg drop-shadow-md px-2 py-1 ${COLORS_PER_PRIORITY[event.priority]}`} style={{
+            <div data-priority={event.priority} className={`absolute rounded-lg drop-shadow-md px-2 py-1 ${COLORS_PER_PRIORITY[event.priority]}`} style={{
               left: 16 * (event.priority - 1),
               width: `calc(100% - ${8 * (event.priority - 1)}px)`,
               top: calculateStartingPositionFromDate(startingTime, event.start) + MARGIN_EVENTS,
@@ -106,7 +126,9 @@ const Calendar = ({ events, date }: CalendarProps) => {
           </Modal>
         ))}
       </div>
-      <div className="w-14 h-fit"></div>
+      <div className="w-14 h-fit">
+        {ready ? <div className={`absolute z-1 bg-white ml-2 px-1 text-sm ${isSameDay(date, time) ? 'text-red-400' : 'text-gray-200'}`} style={{ top: calculateStartingPositionFromDate(startingTime, time) - 10 }}>{formatTime(time)}</div> : null}
+      </div>
     </div>
   )
 }
