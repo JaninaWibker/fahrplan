@@ -17,6 +17,7 @@
 
 # temporary local .ics files
 *.ics
+!example.ics
 
 # misc
 .DS_Store
