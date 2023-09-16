@@ -1,3 +1,5 @@
+'use client'
+
 import { formatTime } from '../utils/date'
 import type { Event } from '../utils/ical'
 
@@ -5,7 +7,7 @@ type EventDisplayProps = {
   event: Event
 }
 
-const EventDisplay = ({ event }: EventDisplayProps) => {
+export const EventDisplay = ({ event }: EventDisplayProps) => {
   return (
     <div>
       {event.location ? (
@@ -25,4 +27,3 @@ const EventDisplay = ({ event }: EventDisplayProps) => {
   )
 }
 
-export default EventDisplay

@@ -1,3 +1,5 @@
+'use client'
+
 import type { PropsWithChildren, ReactNode } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
@@ -8,7 +10,7 @@ type ModalProps = PropsWithChildren<{
   trigger: ReactNode
 }>
 
-const Modal = ({ title, trigger, children }: ModalProps) => {
+export const Modal = ({ title, trigger, children }: ModalProps) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -32,4 +34,3 @@ const Modal = ({ title, trigger, children }: ModalProps) => {
   )
 }
 
-export default Modal

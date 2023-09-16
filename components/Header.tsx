@@ -1,3 +1,5 @@
+'use clientl'
+
 import React from 'react'
 import ChevronLeft from '../icons/ChevronLeft'
 import ChevronRight from '../icons/ChevronRight'
@@ -11,7 +13,7 @@ type HeaderProps = {
   canNext: boolean
 }
 
-const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) => {
+export const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) => {
   return (
     <div className="">
       <h1 className="p-4 text-4xl font-semibold">Fahrplan</h1>
@@ -36,5 +38,3 @@ const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) => {
     </div>
   )
 }
-
-export default Header

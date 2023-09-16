@@ -1,8 +1,10 @@
+'use client'
+
 import React, { useEffect, useState, useRef } from 'react'
 import type { Event } from '../utils/ical'
 import { isSameDay, formatTime } from '../utils/date'
-import Modal from './Modal'
-import EventDisplay from './EventDisplay'
+import { Modal } from './Modal'
+import { EventDisplay } from './EventDisplay'
 
 const HEIGHT_PER_HOUR = 48
 const MARGIN_EVENTS = 2
@@ -95,7 +97,7 @@ type CalendarProps = {
   events: Event[]
 }
 
-const Calendar = ({ events, date }: CalendarProps) => {
+export const Calendar = ({ events, date }: CalendarProps) => {
   const hours = calculateHoursFromEvents(events)
   const startingTime = hours[0]
   const currentEvents = events.filter(
@@ -168,5 +170,3 @@ const Calendar = ({ events, date }: CalendarProps) => {
     </div>
   )
 }
-
-export default Calendar
