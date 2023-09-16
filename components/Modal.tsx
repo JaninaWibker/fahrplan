@@ -1,9 +1,7 @@
 'use client'
 
 import type { PropsWithChildren, ReactNode } from 'react'
-import * as Dialog from '@radix-ui/react-dialog'
-
-import CloseIcon from '../icons/Close'
+import { Drawer } from 'vaul'
 
 type ModalProps = PropsWithChildren<{
   title: string
@@ -12,25 +10,20 @@ type ModalProps = PropsWithChildren<{
 
 export const Modal = ({ title, trigger, children }: ModalProps) => {
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-      <Dialog.Portal className="fixed right-0 top-0 h-screen w-screen">
-        <Dialog.Overlay>
-          <div className="fixed left-0 top-0 h-screen w-screen bg-black/25" />
-        </Dialog.Overlay>
-        <Dialog.Content>
-          <div className="absolute bottom-0 flex h-fit w-full flex-col gap-2 overflow-hidden rounded bg-white pb-32">
-            <div className="w-full">
-              <Dialog.Title className="p-2 font-bold">{title}</Dialog.Title>
-              <div className="overflow-scroll">{children}</div>
-              <Dialog.Close className="absolute right-0 top-0 p-2">
-                <CloseIcon />
-              </Dialog.Close>
+    <Drawer.Root shouldScaleBackground>
+      <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+        <Drawer.Content className="fixed inset-x-0 bottom-0 mt-24 flex h-full max-h-[40%] flex-col rounded-t-[10px] bg-gray-100">
+          <div className="flex-1 rounded-t-[10px] bg-white p-4">
+            <div className="mx-auto mb-8 h-1.5 w-12 shrink-0 rounded-full bg-gray-300" />
+            <div className="mx-auto max-w-md">
+              <Drawer.Title className="mb-4 font-medium">{title}</Drawer.Title>
+              {children}
             </div>
           </div>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
   )
 }
-

@@ -17,7 +17,11 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de" className={inter.variable}>
-      <body>{children}</body>
+      <body>
+        <div className="bg-white antialiased" vaul-drawer-wrapper="">
+          {children}
+        </div>
+      </body>
     </html>
   )
 }

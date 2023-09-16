@@ -1,8 +1,7 @@
 'use clientl'
 
 import React from 'react'
-import ChevronLeft from '../icons/ChevronLeft'
-import ChevronRight from '../icons/ChevronRight'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { formatDate } from '../utils/date'
 
 type HeaderProps = {
