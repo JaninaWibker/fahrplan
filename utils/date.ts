@@ -1,8 +1,10 @@
-const isSameDay = (a: Date, b: Date) => a.getDate() === b.getDate() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()
+const isSameDay = (a: Date, b: Date) =>
+  a.getDate() === b.getDate() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()
 
-const isEarlierDay = (a: Date, b: Date) => (a.getFullYear() < b.getFullYear())
-                                        || (a.getFullYear() === b.getFullYear() && a.getMonth() < b.getMonth())
-                                        || (a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() < b.getDate())
+const isEarlierDay = (a: Date, b: Date) =>
+  a.getFullYear() < b.getFullYear() ||
+  (a.getFullYear() === b.getFullYear() && a.getMonth() < b.getMonth()) ||
+  (a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() < b.getDate())
 
 const isLaterDay = (a: Date, b: Date) => isEarlierDay(b, a)
 
@@ -22,12 +24,4 @@ const formatTime = (date: Date) => date.toLocaleTimeString('de-DE', { hour: 'num
 
 const formatDate = (date: Date) => date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' })
 
-export {
-  isSameDay,
-  isEarlierDay,
-  isLaterDay,
-  compareByDay,
-  clampDay,
-  formatTime,
-  formatDate
-}
+export { isSameDay, isEarlierDay, isLaterDay, compareByDay, clampDay, formatTime, formatDate }

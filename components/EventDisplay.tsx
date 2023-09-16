@@ -8,22 +8,19 @@ type EventDisplayProps = {
 const EventDisplay = ({ event }: EventDisplayProps) => {
   return (
     <div>
-    {event.location
-      ? (
-          <div className="flex flex-row">
-            <span className="text-slate-600 p-2">{'Ort: '}</span>
-            <span className="p-2">{event.location}</span>
-          </div>
-        )
-      : null}
+      {event.location ? (
+        <div className="flex flex-row">
+          <span className="p-2 text-slate-600">{'Ort: '}</span>
+          <span className="p-2">{event.location}</span>
+        </div>
+      ) : null}
       <div className="flex flex-row">
-        <span className="text-slate-600 p-2">{'Zeit: '}</span>
-        <span className="p-2">{formatTime(event.start)} - {formatTime(event.end)}</span>
+        <span className="p-2 text-slate-600">{'Zeit: '}</span>
+        <span className="p-2">
+          {formatTime(event.start)} - {formatTime(event.end)}
+        </span>
       </div>
-      {event.description
-        ? <div className="p-2 " dangerouslySetInnerHTML={{ __html: event.description }} />
-        : null
-      }
+      {event.description ? <div className="p-2 " dangerouslySetInnerHTML={{ __html: event.description }} /> : null}
     </div>
   )
 }
