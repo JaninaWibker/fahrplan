@@ -1,17 +1,18 @@
 'use client'
 
 import React, { useEffect, useState, useRef } from 'react'
+import { clsx } from 'clsx'
 import type { Event } from '../utils/ical'
 import { isSameDay, formatTime } from '../utils/date'
 import { Modal } from './Modal'
 import { EventDisplay } from './EventDisplay'
 
-const HEIGHT_PER_HOUR = 48
+const HEIGHT_PER_HOUR = 56
 const MARGIN_EVENTS = 2
 
 const COLORS_PER_PRIORITY: Record<number, string> = {
-  1: 'bg-blue-400',
-  2: 'bg-blue-300'
+  1: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
+  2: 'bg-pink-100 text-pink-700 hover:bg-pink-200'
 }
 
 const useTime = (refreshTime = 1000): [Date, true] | [undefined, false] => {
@@ -109,10 +110,10 @@ export const Calendar = ({ events, date }: CalendarProps) => {
 
   // TODO: better styles for overlapping events
   return (
-    <div className="relative flex w-full overflow-y-scroll" style={{ height: 'calc(100vh - 140px)' }}>
+    <div className="relative flex w-full overflow-y-scroll" style={{ height: 'calc(100vh - 108px)' }}>
       {ready ? (
         <div
-          className={`z-1 absolute h-1 w-full ${isSameDay(date, time) ? 'bg-red-400' : 'bg-gray-200'}`}
+          className={`absolute h-1 w-full ${isSameDay(date, time) ? 'bg-red-400' : 'bg-gray-200'}`}
           style={{ top: calculateStartingPositionFromDate(startingTime, time) - 2 }}
         ></div>
       ) : null}
@@ -120,7 +121,7 @@ export const Calendar = ({ events, date }: CalendarProps) => {
         {hours.map((hour) => (
           <div
             key={hour.toISOString()}
-            className="z-2 relative flex items-center justify-end text-right text-sm font-medium"
+            className="relative flex items-center justify-end text-right text-sm font-medium text-gray-400"
             style={{ height: HEIGHT_PER_HOUR }}
           >
             <div className="mx-1 bg-white px-1">{formatTime(hour)}</div>
@@ -135,7 +136,10 @@ export const Calendar = ({ events, date }: CalendarProps) => {
             trigger={
               <div
                 data-priority={event.priority}
-                className={`absolute rounded-lg px-2 py-1 drop-shadow-md ${COLORS_PER_PRIORITY[event.priority]}`}
+                className={clsx(
+                  `absolute rounded-lg px-3 py-2 outline outline-2 outline-white`,
+                  COLORS_PER_PRIORITY[event.priority]
+                )}
                 style={{
                   left: 16 * (event.priority - 1),
                   width: `calc(100% - ${8 * (event.priority - 1)}px)`,
@@ -143,10 +147,10 @@ export const Calendar = ({ events, date }: CalendarProps) => {
                   height: calculateHeightFromDate(event.start, event.end) - 2 * MARGIN_EVENTS
                 }}
               >
-                <div className="truncate text-sm text-white">{event.title}</div>
-                <div className="text-xs text-white">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
+                <div className="truncate text-sm font-semibold">{event.title}</div>
+                <div className="text-sm">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
                 {calculateDurationFromDate(event.start, event.end) > 1 ? (
-                  <div className="truncate text-xs text-white">{event.short_location}</div>
+                  <div className="truncate text-xs">{event.short_location}</div>
                 ) : null}
               </div>
             }
@@ -158,8 +162,8 @@ export const Calendar = ({ events, date }: CalendarProps) => {
       <div className="h-fit w-14">
         {ready ? (
           <div
-            className={`z-1 absolute ml-2 bg-white px-1 text-sm ${
-              isSameDay(date, time) ? 'text-red-400' : 'text-gray-200'
+            className={`absolute ml-2 bg-white px-1 text-sm ${
+              isSameDay(date, time) ? 'text-red-400' : 'text-gray-400'
             }`}
             style={{ top: calculateStartingPositionFromDate(startingTime, time) - 10 }}
           >

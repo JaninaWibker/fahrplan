@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de" className={inter.variable}>
       <body>
-        <div className="bg-white antialiased" vaul-drawer-wrapper="">
+        <div className="h-screen w-screen bg-white antialiased" vaul-drawer-wrapper="">
           {children}
         </div>
       </body>

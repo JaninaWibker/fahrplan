@@ -11,19 +11,18 @@ export const EventDisplay = ({ event }: EventDisplayProps) => {
   return (
     <div>
       {event.location ? (
-        <div className="flex flex-row">
-          <span className="p-2 text-slate-600">{'Ort: '}</span>
-          <span className="p-2">{event.location}</span>
+        <div className="flex flex-row gap-4 py-2">
+          <span className="text-gray-400">{'Ort: '}</span>
+          <span>{event.location}</span>
         </div>
       ) : null}
-      <div className="flex flex-row">
-        <span className="p-2 text-slate-600">{'Zeit: '}</span>
-        <span className="p-2">
+      <div className="flex flex-row gap-4 py-2">
+        <span className=" text-gray-400">{'Zeit: '}</span>
+        <span>
           {formatTime(event.start)} - {formatTime(event.end)}
         </span>
       </div>
-      {event.description ? <div className="p-2 " dangerouslySetInnerHTML={{ __html: event.description }} /> : null}
+      {event.description ? <div className="" dangerouslySetInnerHTML={{ __html: event.description }} /> : null}
     </div>
   )
 }
-
