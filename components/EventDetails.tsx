@@ -4,11 +4,11 @@ import { CalendarClock, MapPin } from 'lucide-react'
 import { formatTime } from '../utils/date'
 import type { Event } from '../utils/ical'
 
-type EventDisplayProps = {
+type EventDetails = {
   event: Event
 }
 
-export const EventDisplay = ({ event }: EventDisplayProps) => {
+export const EventDetails = ({ event }: EventDetails) => {
   return (
     <div>
       {event.location ? (

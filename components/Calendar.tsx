@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState, useRef } from 'react'
 import { clsx } from 'clsx'
+import { BadgeCheck } from 'lucide-react'
 import type { Event } from '../utils/ical'
 import { isSameDay, formatTime } from '../utils/date'
 import { Modal } from './Modal'
-import { EventDisplay } from './EventDisplay'
+import { EventDetails } from './EventDetails'
 
 const HEIGHT_PER_HOUR = 56
 const MARGIN_EVENTS = 2
@@ -118,7 +119,10 @@ const EventItem = ({ event, startingTime }: { event: Event; startingTime: Date }
         height: calculateHeightFromDate(event.start, event.end) - 2 * MARGIN_EVENTS
       }}
     >
-      <div className="truncate text-sm font-semibold">{event.title}</div>
+      <div className="flex items-center truncate text-sm font-semibold">
+        {event.title}
+        {event.verified ? <BadgeCheck className="h-4 w-5 stroke-[2.5px] pl-1" /> : null}
+      </div>
       <div className="text-sm">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
       {calculateDurationFromDate(event.start, event.end) > 1 ? (
         <div className="truncate text-xs">{event.short_location}</div>
@@ -167,7 +171,7 @@ export const Calendar = ({ events, date }: CalendarProps) => {
               </div>
             }
           >
-            <EventDisplay event={event} />
+            <EventDetails event={event} />
           </Modal>
         ))}
       </div>

@@ -10,7 +10,7 @@ export type Event = {
   end: Date
   color: string | null // TODO: currently unused
   allDay: boolean
-  specialEvent: boolean
+  verified: boolean
   priority: number
   maxPriority: number
 }
@@ -25,7 +25,7 @@ export type SerializedEvent = {
   end: string
   color: string | null // TODO: currently unused
   allDay: boolean
-  specialEvent: boolean
+  verified: boolean
   priority: number
   maxPriority: number
 }
@@ -108,11 +108,11 @@ const load = (url: string): Promise<SerializedEvent[]> =>
       const events: (Omit<Event, 'priority' | 'maxPriority'> & { priority: null; maxPriority: null })[] =
         icalEvents.map((event) => {
           const allDay = event.dtstart.params?.value === 'DATE' || event.dtend.params?.value === 'DATE'
-          const specialEvent = event.summary.value.startsWith('*')
+          const verified = event.summary.value.startsWith('*')
 
           return {
             uuid: event.uid.value,
-            title: specialEvent ? event.summary.value.slice(1) : event.summary.value,
+            title: verified ? event.summary.value.slice(1) : event.summary.value,
             location: event.location ? event.location.value : null,
             short_location: event.location ? shortenLocation(event.location.value) : null,
             description: event.description ? event.description.value : null,
@@ -120,7 +120,7 @@ const load = (url: string): Promise<SerializedEvent[]> =>
             end: event.dtend.value,
             color: null,
             allDay,
-            specialEvent,
+            verified,
             priority: null,
             maxPriority: null
           }
