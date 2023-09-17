@@ -29,7 +29,7 @@
     "**/*.ts",
     "**/*.tsx",
     "ical-parser.d.ts",
-    "build/types/**/*.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
