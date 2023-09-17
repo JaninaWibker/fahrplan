@@ -2,8 +2,7 @@
 
 A quick and easy way to turn an iCAL calendar into an interactive web page for your event.
 
-![](./.github/assets/screenshot.png)
-![](./.github/assets/demo.gif)
+<img src="./.github/assets/screenshot.png" width="300" /> <img src="./.github/assets/demo.gif" width="300" />
 
 ## Getting Started
 
