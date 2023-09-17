@@ -6,10 +6,10 @@ A quick and easy way to turn an iCAL calendar into an interactive web page for y
 
 ## Getting Started
 
-Create a `.env` file which sets the following environment variables:
+Create an `.env` file which sets the following environment variables:
 
 ```bash
-ICAL_URL="<url of ical file>"
+ICAL_URL="<url of ical file>"      # use http://localhost:<port>/<filename>.ics for a local file (public/)
 NEXT_PUBLIC_BASE_PATH="<base path, e.g. /fahrplan or />"
 
 # optional
