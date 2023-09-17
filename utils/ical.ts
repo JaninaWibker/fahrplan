@@ -9,8 +9,9 @@ export type Event = {
   start: Date
   end: Date
   color: string | null // TODO: currently unused
+  allDay: boolean
   priority: number
-  max_priority: number
+  maxPriority: number
 }
 
 export type SerializedEvent = {
@@ -22,11 +23,12 @@ export type SerializedEvent = {
   start: string
   end: string
   color: string | null // TODO: currently unused
+  allDay: boolean
   priority: number
-  max_priority: number
+  maxPriority: number
 }
 
-const intervalGraphColoring = (events: Omit<Event, 'priority' | 'max_priority'>[]): Event[] => {
+const intervalGraphColoring = (events: Omit<Event, 'priority' | 'maxPriority'>[]): Event[] => {
   const sortedEntries = events
     .flatMap((event) => [
       { type: 'start', time: event.start.getTime(), uuid: event.uuid },
@@ -41,7 +43,7 @@ const intervalGraphColoring = (events: Omit<Event, 'priority' | 'max_priority'>[
     })
 
   // proper shape, makes modifications easier
-  const entries = sortedEntries.map((entry) => ({ ...entry, priority: 0, max_priority: 0 }))
+  const entries = sortedEntries.map((entry) => ({ ...entry, priority: 0, maxPriority: 0 }))
 
   let stack: typeof entries = []
 
@@ -60,7 +62,7 @@ const intervalGraphColoring = (events: Omit<Event, 'priority' | 'max_priority'>[
     } else {
       const maxPriority = stack.length - 1
       stack.forEach((entry) => {
-        entry.max_priority = Math.max(entry.max_priority, maxPriority)
+        entry.maxPriority = Math.max(entry.maxPriority, maxPriority)
       })
       stack = stack.filter(({ uuid }) => uuid !== entry.uuid)
     }
@@ -69,11 +71,11 @@ const intervalGraphColoring = (events: Omit<Event, 'priority' | 'max_priority'>[
   return entries
     .filter((entry) => entry.type === 'start')
     .map((entry) => {
-      const event: Omit<Event, 'priority' | 'max_priority'> = events.find((event) => event.uuid === entry.uuid) as Omit<
+      const event: Omit<Event, 'priority' | 'maxPriority'> = events.find((event) => event.uuid === entry.uuid) as Omit<
         Event,
-        'priority' | 'max_priority'
+        'priority' | 'maxPriority'
       >
-      return { ...event, priority: entry.priority + 1, max_priority: entry.max_priority + 1 }
+      return { ...event, priority: entry.priority + 1, maxPriority: entry.maxPriority + 1 }
     })
 }
 
@@ -101,7 +103,7 @@ const load = (url: string): Promise<SerializedEvent[]> =>
     .then((text) => {
       const { events: icalEvents, calendarData } = ical.parseString(text)
 
-      const events: (Omit<Event, 'priority' | 'max_priority'> & { priority: null; max_priority: null })[] =
+      const events: (Omit<Event, 'priority' | 'maxPriority'> & { priority: null; maxPriority: null })[] =
         icalEvents.map((event) => ({
           uuid: event.uid.value,
           title: event.summary.value,
@@ -111,21 +113,14 @@ const load = (url: string): Promise<SerializedEvent[]> =>
           start: event.dtstart.value,
           end: event.dtend.value,
           color: null,
+          allDay: event.dtstart.params?.value === 'DATE' || event.dtend.params?.value === 'DATE',
           priority: null,
-          max_priority: null
+          maxPriority: null
         }))
 
-      // unused for now
-      // {
-      //   dtstamp: 2022-10-15T10:02:05.000Z,
-      //   created: 2022-10-15T04:49:31.000Z,
-      //   'last-modified': 2022-10-15T04:54:46.000Z,
-      //   sequence: [Object],
-      //   status: [Object],
-      //   transp: [Object]
-      // }
+      const filteredEvents = events.filter(({ allDay }) => !allDay)
 
-      return serialize(intervalGraphColoring(events))
+      return serialize(intervalGraphColoring(filteredEvents))
     })
 
 export { load, serialize, deserialize }

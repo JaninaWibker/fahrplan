@@ -28,21 +28,63 @@ const computeDateRangeClamp = () => {
 
 const computeDateRangeState = (events: Event[], currentDay: Date) => {
   const { min, max } = computeDateRangeClamp()
-  const filteredEvents =
+  const clampFilteredEvents =
     min !== undefined && max !== undefined
       ? events.filter((event) => compareByDay(event.start, min) >= 0 && compareByDay(event.end, max) <= 0)
       : events
 
-  const sortedDates = filteredEvents.flatMap((event) => [event.start, event.end]).sort(compareByDay)
+  if (clampFilteredEvents.length === 0) {
+    return {
+      empty: true,
+      startingDay: new Date(NaN),
+      endingDay: new Date(NaN),
+      initialDay: new Date(NaN),
+      filteredEvents: []
+    }
+  }
+
+  const sortedDates = clampFilteredEvents.flatMap((event) => [event.start, event.end]).sort(compareByDay)
   const startingDay = sortedDates[0]
   const endingDay = sortedDates[sortedDates.length - 1]
   const initialDay = clampDay(startingDay, endingDay, currentDay)
 
+  // to make things easier to debug later on filter out all events which aren't in the date range
+  // that is going to be shown
+  const filteredEvents = events.filter(
+    (event) => compareByDay(event.start, startingDay) >= 0 && compareByDay(event.end, endingDay) <= 0
+  )
+
   return {
     startingDay,
     endingDay,
-    initialDay
+    initialDay,
+    filteredEvents,
+    empty: filteredEvents.length === 0
   }
+}
+
+const Empty = () => {
+  const { min, max } = computeDateRangeClamp()
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-semibold">Your calendar is empty 🤷🏻</h1>
+      <p className="pt-1 text-gray-500">There are no events to show.</p>
+      {min !== undefined && max !== undefined && (
+        <>
+          <p className="pt-8 text-gray-700">
+            The calendar is configured to be clamped between <strong>{min.toLocaleDateString()}</strong> and{' '}
+            <strong>{max.toLocaleDateString()}</strong>.
+            <br />
+            Try widening the date range, maybe the issue is just timezones.
+          </p>
+          <pre className="pt-4 text-sm">
+            <code>{JSON.stringify({ min, max }, null, 2)}</code>
+          </pre>
+        </>
+      )}
+      <p className="pt-4 text-gray-700">Note that all day events are not supported and will not be shown.</p>
+    </div>
+  )
 }
 
 const Home = async () => {
@@ -50,9 +92,13 @@ const Home = async () => {
   const serializedEvents = await load(process.env.ICAL_URL)
   const events = deserialize(serializedEvents)
 
-  const { startingDay, endingDay, initialDay } = computeDateRangeState(events, new Date())
+  const { startingDay, endingDay, initialDay, filteredEvents, empty } = computeDateRangeState(events, new Date())
 
-  return <Main startingDay={startingDay} endingDay={endingDay} initialDay={initialDay} events={events} />
+  return empty ? (
+    <Empty />
+  ) : (
+    <Main startingDay={startingDay} endingDay={endingDay} initialDay={initialDay} events={filteredEvents} />
+  )
 }
 
 export default Home

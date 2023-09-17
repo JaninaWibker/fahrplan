@@ -4,8 +4,8 @@ declare module 'cal-parser' {
     summary: { value: string }
     location: { value: string }
     description: { value: string }
-    dtstart: { value: Date }
-    dtend: { value: Date }
+    dtstart: { value: Date; params?: { value?: string } }
+    dtend: { value: Date; params?: { value?: string } }
   }
 
   type ICALCalendarData = {
