@@ -43,21 +43,27 @@ const intervalGraphColoring = (events: Omit<Event, 'priority' | 'max_priority'>[
   // proper shape, makes modifications easier
   const entries = sortedEntries.map((entry) => ({ ...entry, priority: 0, max_priority: 0 }))
 
-  const stack: typeof entries = []
+  let stack: typeof entries = []
 
   for (const entry of entries) {
     if (entry.type === 'start') {
+      const unusedPriorities = Array.from({ length: stack.length })
+        .map((_, i) => i)
+        .filter((i) => !stack.some((entry) => entry.priority === i))
+
+      if (unusedPriorities.length > 0) {
+        entry.priority = unusedPriorities[0]
+      } else {
+        entry.priority = stack.length
+      }
       stack.push(entry)
     } else {
-      const maxPriority = stack.length
+      const maxPriority = stack.length - 1
       stack.forEach((entry) => {
         entry.max_priority = Math.max(entry.max_priority, maxPriority)
       })
-      stack.pop()
+      stack = stack.filter(({ uuid }) => uuid !== entry.uuid)
     }
-
-    entry.priority = stack.length
-    entry.max_priority = stack.length
   }
 
   return entries
@@ -67,7 +73,7 @@ const intervalGraphColoring = (events: Omit<Event, 'priority' | 'max_priority'>[
         Event,
         'priority' | 'max_priority'
       >
-      return { ...event, priority: entry.priority, max_priority: entry.max_priority }
+      return { ...event, priority: entry.priority + 1, max_priority: entry.max_priority + 1 }
     })
 }
 
@@ -90,7 +96,7 @@ const shortenLocation = (location: string) => {
 }
 
 const load = (url: string): Promise<SerializedEvent[]> =>
-  fetch(url)
+  fetch(url, { next: { revalidate: 600 } })
     .then((res) => res.text())
     .then((text) => {
       const { events: icalEvents, calendarData } = ical.parseString(text)
