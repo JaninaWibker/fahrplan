@@ -10,6 +10,7 @@ export type Event = {
   end: Date
   color: string | null // TODO: currently unused
   allDay: boolean
+  specialEvent: boolean
   priority: number
   maxPriority: number
 }
@@ -24,6 +25,7 @@ export type SerializedEvent = {
   end: string
   color: string | null // TODO: currently unused
   allDay: boolean
+  specialEvent: boolean
   priority: number
   maxPriority: number
 }
@@ -104,19 +106,25 @@ const load = (url: string): Promise<SerializedEvent[]> =>
       const { events: icalEvents, calendarData } = ical.parseString(text)
 
       const events: (Omit<Event, 'priority' | 'maxPriority'> & { priority: null; maxPriority: null })[] =
-        icalEvents.map((event) => ({
-          uuid: event.uid.value,
-          title: event.summary.value,
-          location: event.location ? event.location.value : null,
-          short_location: event.location ? shortenLocation(event.location.value) : null,
-          description: event.description ? event.description.value : null,
-          start: event.dtstart.value,
-          end: event.dtend.value,
-          color: null,
-          allDay: event.dtstart.params?.value === 'DATE' || event.dtend.params?.value === 'DATE',
-          priority: null,
-          maxPriority: null
-        }))
+        icalEvents.map((event) => {
+          const allDay = event.dtstart.params?.value === 'DATE' || event.dtend.params?.value === 'DATE'
+          const specialEvent = event.summary.value.startsWith('*')
+
+          return {
+            uuid: event.uid.value,
+            title: specialEvent ? event.summary.value.slice(1) : event.summary.value,
+            location: event.location ? event.location.value : null,
+            short_location: event.location ? shortenLocation(event.location.value) : null,
+            description: event.description ? event.description.value : null,
+            start: event.dtstart.value,
+            end: event.dtend.value,
+            color: null,
+            allDay,
+            specialEvent,
+            priority: null,
+            maxPriority: null
+          }
+        })
 
       const filteredEvents = events.filter(({ allDay }) => !allDay)
 
