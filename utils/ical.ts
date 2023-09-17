@@ -3,8 +3,8 @@ import ical from 'cal-parser'
 export type Event = {
   uuid: string
   title: string
-  location: string
-  short_location: string
+  location: string | null
+  short_location: string | null
   description: string | null
   start: Date
   end: Date
@@ -16,8 +16,8 @@ export type Event = {
 export type SerializedEvent = {
   uuid: string
   title: string
-  location: string
-  short_location: string
+  location: string | null
+  short_location: string | null
   description: string | null
   start: string
   end: string
@@ -94,12 +94,13 @@ const load = (url: string): Promise<SerializedEvent[]> =>
     .then((res) => res.text())
     .then((text) => {
       const { events: icalEvents, calendarData } = ical.parseString(text)
+
       const events: (Omit<Event, 'priority' | 'max_priority'> & { priority: null; max_priority: null })[] =
         icalEvents.map((event) => ({
           uuid: event.uid.value,
           title: event.summary.value,
-          location: event.location.value,
-          short_location: shortenLocation(event.location.value),
+          location: event.location ? event.location.value : null,
+          short_location: event.location ? shortenLocation(event.location.value) : null,
           description: event.description ? event.description.value : null,
           start: event.dtstart.value,
           end: event.dtend.value,
