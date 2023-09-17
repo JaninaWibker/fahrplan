@@ -1,35 +1,38 @@
-import type { PropsWithChildren, ReactNode } from 'react'
-import * as Dialog from '@radix-ui/react-dialog'
+'use client'
 
-import CloseIcon from '../icons/Close'
+import { useState } from 'react'
+import type { PropsWithChildren, ReactNode } from 'react'
+import { Drawer } from 'vaul'
 
 type ModalProps = PropsWithChildren<{
-  title: string,
+  title: string
   trigger: ReactNode
 }>
 
-const Modal = ({ title, trigger, children }: ModalProps) => {
+export const Modal = ({ title, trigger, children }: ModalProps) => {
+  const [snap, setSnap] = useState<string | number | null>('196px')
+
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-      <Dialog.Portal className="fixed w-screen h-screen top-0 right-0">
-      <Dialog.Overlay>
-        <div className="bg-black bg-opacity-25 fixed top-0 left-0 w-screen h-screen" />
-      </Dialog.Overlay>
-      <Dialog.Content>
-        <div className="absolute flex flex-col gap-2 bottom-0 w-full h-fit pb-32 rounded bg-white overflow-hidden">
-          <div className="w-full">
-            <Dialog.Title className="font-bold p-2">{title}</Dialog.Title>
-            <div className="overflow-scroll">{children}</div>
-            <Dialog.Close className="absolute top-0 right-0 p-2">
-              <CloseIcon />
-            </Dialog.Close>
+    <Drawer.Root
+      shouldScaleBackground
+      snapPoints={['196px', 1]}
+      activeSnapPoint={snap}
+      setActiveSnapPoint={setSnap}
+      fadeFromIndex={0}
+    >
+      <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+        <Drawer.Content className="fixed inset-x-0 bottom-0 mt-24 flex h-full max-h-[97vh] flex-col rounded-t-[10px] bg-gray-100 focus:outline-none">
+          <div className="flex-1 rounded-t-[10px] bg-white p-4">
+            <div className="mx-auto mb-4 h-1.5 w-12 shrink-0 rounded-full bg-gray-300" />
+            <div className="mx-auto max-w-md">
+              <Drawer.Title className="mb-4 font-medium">{title}</Drawer.Title>
+              {children}
+            </div>
           </div>
-        </div>
-      </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
   )
 }
-
-export default Modal
