@@ -137,7 +137,7 @@ export const Calendar = ({ events, date }: CalendarProps) => {
               <div
                 data-priority={event.priority}
                 className={clsx(
-                  `absolute rounded-lg px-3 py-2 outline outline-2 outline-white`,
+                  `absolute rounded-lg px-3 py-2 outline outline-[3px] outline-white`,
                   COLORS_PER_PRIORITY[event.priority]
                 )}
                 style={{
