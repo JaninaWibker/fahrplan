@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import type { PropsWithChildren, ReactNode } from 'react'
 import { Drawer } from 'vaul'
-import { clsx } from 'clsx'
 
 type ModalProps = PropsWithChildren<{
   title: string
