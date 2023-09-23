@@ -1,0 +1,48 @@
+name: Build Docker image
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  docker:
+    name: Push to GitHub Container Registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      # This is the place to do any modifications to the `.env` file that you require
+      # The environment variables are required at **build time**, you cannot set them
+      # at runtime. Thus this docker image is just for show and this file is something
+      # for you to copy and adapt to your needs.
+
+      - name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@v4
+        with:
+          images: "ghcr.io/${{ github.repository }}"
+          tags: |
+            type=sha
+            type=ref,event=branch
+          flavor: |
+            latest=true
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        if: github.event_name == 'push'
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push to registry
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
