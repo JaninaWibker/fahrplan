@@ -52,8 +52,10 @@ const calculateStartingPositionFromDate = (startingTime: Date, date: Date) => {
   return hoursFromStart * HEIGHT_PER_HOUR
 }
 
-const calculateDurationFromDate = (start: Date, end: Date) =>
-  (end.getHours() || 24) - start.getHours() + (end.getMinutes() - start.getMinutes()) / 60
+const calculateDurationFromDate = (start: Date, end: Date) => {
+  const duration = (end.getHours() || 24) - start.getHours() + (end.getMinutes() - start.getMinutes()) / 60
+  return duration < 0 ? 24 - start.getHours() - start.getMinutes() / 60 : duration
+}
 
 /**
  * The height of an event is calculated by its length and the height of an hour
@@ -105,11 +107,12 @@ type CalendarProps = {
 }
 
 const EventItem = ({ event, startingTime }: { event: Event; startingTime: Date }) => {
+  console.log(calculateDurationFromDate(event.start, event.end))
   return (
     <div
       data-priority={event.priority}
       className={clsx(
-        `absolute rounded-lg px-3 py-2 outline outline-[3px] outline-white`,
+        'absolute rounded-lg px-3 py-2 outline outline-[3px] outline-white',
         COLORS_PER_PRIORITY[event.priority]
       )}
       style={{
