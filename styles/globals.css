@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-prose a {
+  @apply text-pink-700 underline underline-offset-2 visited:text-pink-500
+}
+
+.custom-prose strong {
+  @apply font-semibold;
+}
+
+.custom-prose em {
+  @apply italic;
+}
+
+.custom-prose ol {
+  @apply list-decimal list-inside py-1;
+}
+
+.custom-prose ul {
+  @apply list-disc list-inside py-1;
+}
+
+.custom-prose li {
+  @apply py-1;
+}
+
+.custom-prose hr {
+  @apply py-1;
+}

@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      
+
       # This is the place to do any modifications to the `.env` file that you require
       # The environment variables are required at **build time**, you cannot set them
       # at runtime. Thus this docker image is just for show and this file is something

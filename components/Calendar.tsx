@@ -107,7 +107,6 @@ type CalendarProps = {
 }
 
 const EventItem = ({ event, startingTime }: { event: Event; startingTime: Date }) => {
-  console.log(calculateDurationFromDate(event.start, event.end))
   return (
     <div
       data-priority={event.priority}
@@ -142,7 +141,7 @@ export const Calendar = ({ events, date }: CalendarProps) => {
       isSameDay(event.start, date) ||
       (isSameDay(event.end, date) && event.end.getHours() !== 0 && event.end.getMinutes() !== 0)
   )
-  const [time, ready] = useTime()
+  const [time, ready] = useTime(10000)
 
   return (
     <div className="relative flex w-full overflow-y-scroll" style={{ height: 'calc(100vh - 108px)' }}>

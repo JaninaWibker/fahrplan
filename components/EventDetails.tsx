@@ -29,7 +29,7 @@ export const EventDetails = ({ event }: EventDetails) => {
         </span>
       </div>
       {event.description ? (
-        <div className="pl-10 pr-4 pt-2" dangerouslySetInnerHTML={{ __html: event.description }} />
+        <div className="custom-prose pl-10 pr-4 pt-2" dangerouslySetInnerHTML={{ __html: event.description }} />
       ) : null}
     </div>
   )
