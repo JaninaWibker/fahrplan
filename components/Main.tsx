@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { isEarlierDay } from '../utils/date'
 import type { Event } from '../utils/ical'
 import { Calendar } from './Calendar'
@@ -14,7 +15,11 @@ type MainProps = {
 }
 
 export const Main = ({ startingDay, endingDay, initialDay, events }: MainProps) => {
-  const [date, setDate] = useState(initialDay)
+  const searchParams = useSearchParams()
+  const activeEventId = searchParams.get('event')
+  const activeEvent = events.find((event) => event.uuid === activeEventId)
+
+  const [date, setDate] = useState(activeEvent ? activeEvent.start : initialDay)
 
   const canPrev = isEarlierDay(startingDay, date) // startingDate < date
   const canNext = isEarlierDay(date, endingDay) // date < endingDate

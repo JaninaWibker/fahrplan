@@ -3,6 +3,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { clsx } from 'clsx'
 import { BadgeCheck } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import type { Event } from '../utils/ical'
 import { isSameDay, formatTime } from '../utils/date'
 import { Modal } from './Modal'
@@ -108,7 +110,8 @@ type CalendarProps = {
 
 const EventItem = ({ event, startingTime }: { event: Event; startingTime: Date }) => {
   return (
-    <div
+    <Link
+      href={`?event=${event.uuid}`}
       data-priority={event.priority}
       className={clsx(
         'absolute rounded-lg px-3 py-2 outline outline-[3px] outline-white',
@@ -129,11 +132,14 @@ const EventItem = ({ event, startingTime }: { event: Event; startingTime: Date }
       {calculateDurationFromDate(event.start, event.end) > 1 ? (
         <div className="truncate text-xs">{event.short_location}</div>
       ) : null}
-    </div>
+    </Link>
   )
 }
 
 export const Calendar = ({ events, date }: CalendarProps) => {
+  const searchParams = useSearchParams()
+  const activeEventId = searchParams.get('event')
+
   const hours = calculateHoursFromEvents(events)
   const startingTime = hours[0]
   const currentEvents = events.filter(
@@ -172,6 +178,7 @@ export const Calendar = ({ events, date }: CalendarProps) => {
                 <EventItem event={event} startingTime={startingTime} />
               </div>
             }
+            open={event.uuid === activeEventId}
           >
             <EventDetails event={event} />
           </Modal>

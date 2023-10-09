@@ -3,14 +3,18 @@
 import { useState } from 'react'
 import type { PropsWithChildren, ReactNode } from 'react'
 import { Drawer } from 'vaul'
+import { useRouter } from 'next/navigation'
 
 type ModalProps = PropsWithChildren<{
   title: string
   trigger: ReactNode
+  open: boolean
 }>
 
-export const Modal = ({ title, trigger, children }: ModalProps) => {
+export const Modal = ({ title, trigger, children, open }: ModalProps) => {
   const [snap, setSnap] = useState<string | number | null>('196px')
+
+  const router = useRouter()
 
   return (
     <Drawer.Root
@@ -19,6 +23,8 @@ export const Modal = ({ title, trigger, children }: ModalProps) => {
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
       fadeFromIndex={0}
+      open={open}
+      onOpenChange={(open) => !open && router.push('/')}
     >
       <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
       <Drawer.Portal>
