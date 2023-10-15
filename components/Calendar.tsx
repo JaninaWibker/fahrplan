@@ -3,8 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { clsx } from 'clsx'
 import { BadgeCheck } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import type { Event } from '../utils/ical'
 import { isSameDay, formatTime } from '../utils/date'
 import { Modal } from './Modal'
@@ -108,10 +107,10 @@ type CalendarProps = {
   events: Event[]
 }
 
-const EventItem = ({ event, startingTime }: { event: Event; startingTime: Date }) => {
+const EventItem = ({ event, startingTime, onClick }: { event: Event; startingTime: Date; onClick?: () => void }) => {
   return (
-    <Link
-      href={`?event=${event.uuid}`}
+    <div
+      onClick={onClick}
       data-priority={event.priority}
       className={clsx(
         'absolute rounded-lg px-3 py-2 outline outline-[3px] outline-white',
@@ -132,11 +131,12 @@ const EventItem = ({ event, startingTime }: { event: Event; startingTime: Date }
       {calculateDurationFromDate(event.start, event.end) > 1 ? (
         <div className="truncate text-xs">{event.short_location}</div>
       ) : null}
-    </Link>
+    </div>
   )
 }
 
 export const Calendar = ({ events, date }: CalendarProps) => {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const activeEventId = searchParams.get('event')
 
@@ -175,10 +175,15 @@ export const Calendar = ({ events, date }: CalendarProps) => {
             title={event.title}
             trigger={
               <div>
-                <EventItem event={event} startingTime={startingTime} />
+                <EventItem
+                  event={event}
+                  startingTime={startingTime}
+                  onClick={() => router.push(`?event=${event.uuid}`)}
+                />
               </div>
             }
             open={event.uuid === activeEventId}
+            onOpenChange={(open) => !open && router.push('/')}
           >
             <EventDetails event={event} />
           </Modal>
