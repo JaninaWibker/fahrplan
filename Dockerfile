@@ -34,25 +34,15 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser  --system --uid 1001 nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules   ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/.next          ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/.env           ./.env
-COPY --from=builder --chown=nextjs:nodejs /app/public         ./public
-COPY --from=builder --chown=nextjs:nodejs /app/package.json   ./package.json
-COPY --from=builder --chown=nextjs:nodejs /app/next.config.js ./next.config.js
-
-# timezones are always fun 🤡
-RUN apk add --no-cache tzdata
-ENV TZ Europe/Berlin
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/pnpm-lock.yaml .
+COPY --from=builder /app/next.config.js .
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
 
 USER nextjs
 
 EXPOSE 3000
 
-CMD ["./node_modules/next/dist/bin/next", "start"]
+CMD ["node", "server.js"]
