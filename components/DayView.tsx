@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { Modal } from '@/components/Modal'
 import { EventDetails } from '@/components/EventDetails'
 import { EventItem } from '@/components/EventItem'
@@ -26,7 +25,6 @@ const TimeAxis = ({ hours }: { hours: Date[] }) => (
 )
 
 type DayViewProps = {
-  currentDate: Date
   /**
    * List of hours to display.
    *
@@ -34,6 +32,7 @@ type DayViewProps = {
    * This should ideally be computed for all events irregardless of day and then used across every day view such that every day has the same starting and ending hour.
    */
   hoursToDisplay: Date[]
+  currentDate: Date
   /**
    * List of all calendar events, filtered to only include events that are on the current day
    */
@@ -51,8 +50,8 @@ type DayViewProps = {
 }
 
 export const DayView = ({
-  currentDate,
   hoursToDisplay,
+  currentDate,
   filteredEvents,
   activeEventId,
   onActiveEventIdChange
