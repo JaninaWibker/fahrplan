@@ -3,7 +3,7 @@
 import React from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { clsx } from 'clsx'
-import { formatDate } from '../utils/date'
+import { formatDate } from '@/utils/date'
 
 type HeaderProps = {
   date: Date

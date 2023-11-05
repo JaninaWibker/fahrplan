@@ -1,8 +1,8 @@
 'use client'
 
 import { CalendarClock, MapPin } from 'lucide-react'
-import { formatTime } from '../utils/date'
-import type { Event } from '../utils/ical'
+import { formatTime } from '@/utils/date'
+import type { Event } from '@/utils/ical'
 
 type EventDetails = {
   event: Event
