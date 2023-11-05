@@ -19,7 +19,7 @@ const isEarlierDay = (a: Date, b: Date) =>
 const isLaterDay = (a: Date, b: Date) => isEarlierDay(b, a)
 
 /**
- * calculates sigma(a - b) with accuracy to the day, thus:
+ * calculates signum(a - b) with accuracy to the day, thus:
  * - a, b are on the same day => 0
  * - a is earlier than b => -1
  * - a is later than b => 1

@@ -21,3 +21,20 @@ export const getConfig = () => {
     startOfWeek: settings.startOfWeek as DaysOfTheWeek
   }
 }
+
+export const computeDateRangeClamp = (date = new Date()) => {
+  const { clampCurrentYear, clampStart, clampEnd } = getConfig()
+
+  if (clampCurrentYear) {
+    return {
+      min: new Date(date.getFullYear(), 0, 0),
+      max: new Date(date.getFullYear(), 11, 31)
+    }
+  }
+
+  if (clampStart === undefined || clampEnd === undefined) {
+    return { min: undefined, max: undefined }
+  } else {
+    return { min: clampStart, max: clampEnd }
+  }
+}
