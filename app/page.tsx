@@ -1,13 +1,13 @@
-import { compareByDay, clampDay } from '../utils/date'
-import { load, deserialize } from '../utils/ical'
-import type { Event } from '../utils/ical'
-import { Main } from '../components/Main'
-import '../styles/globals.css'
+import { Main } from '@/components/Main'
+import { compareByDay, clampDay } from '@/utils/date'
+import { load, deserialize } from '@/utils/ical'
+import type { Event } from '@/utils/ical'
+import { getConfig } from '@/utils/config'
+
+import '@/styles/globals.css'
 
 const computeDateRangeClamp = () => {
-  const clampCurrentYear = process.env.DATE_RANGE_CLAMP_CURRENT_YEAR === 'true'
-  const startClamp = new Date(process.env.DATE_RANGE_CLAMP_START || '')
-  const endClamp = new Date(process.env.DATE_RANGE_CLAMP_END || '')
+  const { clampCurrentYear, clampStart, clampEnd } = getConfig()
 
   if (clampCurrentYear) {
     return {
@@ -16,13 +16,10 @@ const computeDateRangeClamp = () => {
     }
   }
 
-  if (Number.isNaN(startClamp.getTime())) {
-    return { min: undefined, max: undefined }
-  }
-  if (Number.isNaN(endClamp.getTime())) {
+  if (clampStart === undefined || clampEnd === undefined) {
     return { min: undefined, max: undefined }
   } else {
-    return { min: startClamp, max: endClamp }
+    return { min: clampStart, max: clampEnd }
   }
 }
 
@@ -97,8 +94,9 @@ const NoIcalUrl = () => {
 }
 
 const Home = async () => {
-  if (process.env.ICAL_URL === undefined) return <NoIcalUrl />
-  const serializedEvents = await load(process.env.ICAL_URL)
+  const { icalUrl } = getConfig()
+  if (icalUrl === undefined) return <NoIcalUrl />
+  const serializedEvents = await load(icalUrl)
   const events = deserialize(serializedEvents)
 
   const { startingDay, endingDay, initialDay, filteredEvents, empty } = computeDateRangeState(events, new Date())

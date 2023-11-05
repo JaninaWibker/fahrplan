@@ -4,7 +4,7 @@ export type Event = {
   uuid: string
   title: string
   location: string | null
-  short_location: string | null
+  shortLocation: string | null
   description: string | null
   start: Date
   end: Date
@@ -19,7 +19,7 @@ export type SerializedEvent = {
   uuid: string
   title: string
   location: string | null
-  short_location: string | null
+  shortLocation: string | null
   description: string | null
   start: string
   end: string
@@ -114,7 +114,7 @@ const load = (url: string): Promise<SerializedEvent[]> =>
             uuid: event.uid.value,
             title: verified ? event.summary.value.slice(1) : event.summary.value,
             location: event.location ? event.location.value : null,
-            short_location: event.location ? shortenLocation(event.location.value) : null,
+            shortLocation: event.location ? shortenLocation(event.location.value) : null,
             description: event.description ? event.description.value : null,
             start: event.dtstart.value,
             end: event.dtend.value,
