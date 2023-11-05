@@ -22,6 +22,7 @@ export const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) 
         <button
           className={clsx('rounded-full p-2 ', canPrev ? 'text-black' : 'text-slate-300')}
           onClick={canPrev ? onPrev : undefined}
+          disabled={!canPrev}
         >
           <ChevronLeft className="h-8 w-8" />
         </button>
@@ -31,6 +32,7 @@ export const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) 
         <button
           className={clsx('rounded-full p-2 ', canNext ? 'text-black' : 'text-slate-300')}
           onClick={canNext ? onNext : undefined}
+          disabled={!canNext}
         >
           <ChevronRight className="h-8 w-8" />
         </button>
