@@ -2,11 +2,14 @@ import { DAYS_OF_THE_WEEK, type DaysOfTheWeek } from '@/utils/date'
 
 export const getConfig = () => {
   const settings = {
-    clampCurrentYear: process.env.DATE_RANGE_CLAMP_CURRENT_YEAR === 'true',
-    clampStart: new Date(process.env.DATE_RANGE_CLAMP_START || ''),
-    clampEnd: new Date(process.env.DATE_RANGE_CLAMP_END || ''),
+    // server only
     icalUrl: process.env.ICAL_URL,
-    startOfWeek: process.env.START_OF_WEEK || 'monday'
+
+    // client and server
+    clampCurrentYear: process.env.NEXT_PUBLIC_DATE_RANGE_CLAMP_CURRENT_YEAR === 'true',
+    clampStart: new Date(process.env.NEXT_PUBLIC_DATE_RANGE_CLAMP_START || ''),
+    clampEnd: new Date(process.env.NEXT_PUBLIC_DATE_RANGE_CLAMP_END || ''),
+    startOfWeek: process.env.NEXT_PUBLIC_START_OF_WEEK || 'monday'
   }
 
   if (!(DAYS_OF_THE_WEEK as unknown as string[]).includes(settings.startOfWeek)) {
@@ -14,10 +17,10 @@ export const getConfig = () => {
   }
 
   return {
+    icalUrl: settings.icalUrl,
     clampCurrentYear: settings.clampCurrentYear,
     clampStart: Number.isNaN(settings.clampStart.getTime()) ? undefined : settings.clampStart,
     clampEnd: Number.isNaN(settings.clampEnd.getTime()) ? undefined : settings.clampEnd,
-    icalUrl: settings.icalUrl,
     startOfWeek: settings.startOfWeek as DaysOfTheWeek
   }
 }

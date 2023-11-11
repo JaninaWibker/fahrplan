@@ -46,7 +46,15 @@ export const WeekViewThingie = ({
 
   return (
     <>
-      <Header date={currentDate} onPrev={prev} onNext={next} canPrev={canPrev} canNext={canNext} />
+      <Header
+        date={currentDate}
+        activeDays={activeDays}
+        startOfWeek={startOfWeek}
+        onPrev={prev}
+        onNext={next}
+        canPrev={canPrev}
+        canNext={canNext}
+      />
       <WeekView
         currentDate={currentDate}
         eventsPerWeekDay={days}
