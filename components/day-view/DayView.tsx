@@ -4,25 +4,11 @@ import React from 'react'
 import { Modal } from '@/components/Modal'
 import { EventDetails } from '@/components/EventDetails'
 import { EventItem } from '@/components/EventItem'
+import { TimeAxis } from '@/components/TimeAxis'
 import { useTime } from '@/utils/useTime'
 import type { Event } from '@/utils/ical'
 import { isSameDay, formatTime } from '@/utils/date'
 import { calculateStartingPositionFromDate } from '@/utils/events'
-import { HEIGHT_PER_HOUR } from '@/utils/constants'
-
-const TimeAxis = ({ hours }: { hours: Date[] }) => (
-  <div className="h-fit w-14">
-    {hours.map((hour) => (
-      <div
-        key={hour.toISOString()}
-        className="relative flex items-center justify-end text-right text-sm font-medium text-gray-400"
-        style={{ height: HEIGHT_PER_HOUR }}
-      >
-        <div className="mx-1 bg-white px-1">{formatTime(hour)}</div>
-      </div>
-    ))}
-  </div>
-)
 
 type DayViewProps = {
   /**

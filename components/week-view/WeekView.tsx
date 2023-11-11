@@ -1,5 +1,6 @@
 import type { Event } from '@/utils/ical'
 import type { DaysOfTheWeek } from '@/utils/date'
+import { TimeAxis } from '@/components/TimeAxis'
 
 type WeekViewProps = {
   currentDate: Date
@@ -43,5 +44,26 @@ export const WeekView = ({
     activeEventId,
     onActiveEventIdChange
   })
-  return undefined
+  return (
+    <div className={`flex max-h-[calc(100vh-145px)] overflow-y-scroll`}>
+      {/* time axis */}
+      <div className="h-fit w-[72px] shrink-0">
+        <TimeAxis hours={hoursToDisplay} />
+      </div>
+
+      {/* day columns */}
+      <div className="grid w-full grid-cols-7 divide-x-[2px] divide-solid divide-gray-200 border-x-[2px] border-gray-200">
+        <div className="">1</div>
+        <div className="">2</div>
+        <div className="">3</div>
+        <div className="">4</div>
+        <div className="">5</div>
+        <div className="">6</div>
+        <div className="">7</div>
+      </div>
+
+      {/* current time */}
+      <div className="h-fit w-[72px] shrink-0">2</div>
+    </div>
+  )
 }

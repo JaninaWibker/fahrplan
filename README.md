@@ -13,10 +13,12 @@ ICAL_URL="<url of ical file>"      # use http://localhost:<port>/<filename>.ics 
 NEXT_PUBLIC_BASE_PATH="<base path, e.g. /fahrplan or />"
 
 # optional
-DATE_RANGE_CLAMP_CURRENT_YEAR=true # option 1: only show events in the current year
+NEXT_PUBLIC_START_OF_WEEK='monday'             # defaults to monday
 
-DATE_RANGE_CLAMP_START=2023-01-02  # option 2: specify a starting and
-DATE_RANGE_CLAMP_END=2023-03-04    # option 2: ending date
+NEXT_PUBLIC_DATE_RANGE_CLAMP_CURRENT_YEAR=true # option 1: only show events in the current year
+
+NEXT_PUBLIC_DATE_RANGE_CLAMP_START=2023-01-02  # option 2: specify a starting and
+NEXT_PUBLIC_DATE_RANGE_CLAMP_END=2023-03-04    # option 2: ending date
 ```
 
 Install dependencies:

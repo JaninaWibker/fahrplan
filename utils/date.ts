@@ -90,3 +90,22 @@ const formatTime = (date: Date) => date.toLocaleTimeString('de-DE', { hour: 'num
 const formatDate = (date: Date) => date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' })
 
 export { isSameDay, isEarlierDay, isLaterDay, compareByDay, clampDay, formatTime, formatDate }
+
+/** ISO-8601 compliant week number
+/*  the first week of a year is the first week that contains a Thursday
+/*  @see https://weeknumber.com/how-to/javascript
+ */
+export const getWeekNumber = (date: Date) => {
+  const startOfYear = new Date(date)
+  startOfYear.setHours(0, 0, 0, 0)
+  // Thursday in current week decides the year.
+  startOfYear.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7))
+
+  // January 4 is always in week 1
+  const firstWeekOfYear = new Date(date.getFullYear(), 0, 4)
+  // Adjust to Thursday in week 1 and count number of weeks from date to firstWeekOfYear.
+  return (
+    1 +
+    Math.round(((date.getTime() - firstWeekOfYear.getTime()) / 86400000 - 3 + ((firstWeekOfYear.getDay() + 6) % 7)) / 7)
+  )
+}

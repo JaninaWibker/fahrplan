@@ -1,5 +1,10 @@
 import type { Config } from 'tailwindcss'
 
+type Theme = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  theme: (path: string, defaultValue?: unknown) => any
+}
+
 const config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -26,7 +31,20 @@ const config = {
         '"Noto Color Emoji"'
       ]
     },
-    extend: {}
+    extend: {
+      minHeight: ({ theme }: Theme) => ({
+        ...theme('spacing')
+      }),
+      maxHeight: ({ theme }: Theme) => ({
+        ...theme('spacing')
+      }),
+      minWidth: ({ theme }: Theme) => ({
+        ...theme('spacing')
+      }),
+      maxWidth: ({ theme }: Theme) => ({
+        ...theme('spacing')
+      })
+    }
   },
   plugins: []
 } satisfies Config
