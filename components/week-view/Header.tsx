@@ -37,7 +37,7 @@ export const Header = ({ date, activeDays, startOfWeek, onPrev, onNext, canPrev,
   const days = dateRange(start, end).map((dayInWeek, i) => ({
     date: dayInWeek,
     hasEvents: activeDays[i],
-    isToday: isSameDay(dayInWeek, date) // TODO: this shouldn't be date but rather `new Date()`
+    isToday: isSameDay(dayInWeek, new Date())
   }))
 
   return (

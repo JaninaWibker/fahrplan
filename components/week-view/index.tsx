@@ -56,7 +56,7 @@ export const WeekViewThingie = ({
         canNext={canNext}
       />
       <WeekView
-        currentDate={currentDate}
+        week={currentDate}
         eventsPerWeekDay={days}
         activeDays={activeDays}
         startOfWeek={startOfWeek}

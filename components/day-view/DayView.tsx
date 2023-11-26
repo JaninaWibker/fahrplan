@@ -64,6 +64,7 @@ export const DayView = ({
                 <EventItem
                   event={event}
                   startingTime={startingTime}
+                  isActive={event.uuid === activeEventId}
                   onClick={() => onActiveEventIdChange(event.uuid)}
                 />
               </div>
