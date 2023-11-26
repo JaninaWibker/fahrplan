@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import * as Popover from '@radix-ui/react-popover'
 import { clsx } from 'clsx'
 import { BadgeCheck } from 'lucide-react'
 import type { Event } from '@/utils/ical'
@@ -28,14 +29,7 @@ type EventItemProps = {
 export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemProps) => {
   return (
     <div
-      onClick={onClick}
-      data-priority={event.priority}
-      data-state={isActive ? 'active' : 'inactive'}
-      className={clsx('absolute rounded-lg px-3 py-2', COLORS_PER_PRIORITY[event.priority], {
-        'outline outline-[3px] outline-white': isActive || event.maxPriority > 1,
-        'z-10': isActive,
-        'z-0': !isActive
-      })}
+      className="absolute"
       style={{
         left: 16 * (event.priority - 1) + 3,
         width: `calc(100% - 6px - ${16 * (event.priority - 1)}px)`,
@@ -43,14 +37,29 @@ export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemP
         height: calculateHeightFromDate(event.start, event.end) - 2 * MARGIN_EVENTS
       }}
     >
-      <div className="flex items-center truncate text-sm font-semibold">
-        {event.title}
-        {event.verified ? <BadgeCheck className="h-4 w-5 stroke-[2.5px] pl-1" /> : null}
-      </div>
-      <div className="text-sm">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
-      {calculateDurationFromDate(event.start, event.end) > 1 ? (
-        <div className="truncate text-xs">{event.shortLocation}</div>
-      ) : null}
+      <Popover.Anchor
+        asChild /* TODO: it is very very hacky to place this element here, will have to find a better solution for this :c */
+      >
+        <div
+          onClick={onClick}
+          data-priority={event.priority}
+          data-state={isActive ? 'active' : 'inactive'}
+          className={clsx('h-full w-full rounded-lg px-3 py-2', COLORS_PER_PRIORITY[event.priority], {
+            'outline outline-[3px] outline-white': isActive || event.maxPriority > 1,
+            'z-10': isActive,
+            'z-0': !isActive
+          })}
+        >
+          <div className="flex items-center truncate text-sm font-semibold">
+            {event.title}
+            {event.verified ? <BadgeCheck className="h-4 w-5 stroke-[2.5px] pl-1" /> : null}
+          </div>
+          <div className="text-sm">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
+          {calculateDurationFromDate(event.start, event.end) > 1 ? (
+            <div className="truncate text-xs">{event.shortLocation}</div>
+          ) : null}
+        </div>
+      </Popover.Anchor>
     </div>
   )
 }

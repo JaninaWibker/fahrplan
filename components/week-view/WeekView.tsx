@@ -1,4 +1,5 @@
 import { clsx } from 'clsx'
+import { useState } from 'react'
 import { EventDetails } from '../EventDetails'
 import type { Event } from '@/utils/ical'
 import { formatTime, type DaysOfTheWeek, isSameDay, computeStartAndEndOfWeek, dateRange } from '@/utils/date'
@@ -51,7 +52,7 @@ export const WeekView = ({
   activeDays,
   startOfWeek,
   hoursToDisplay,
-  activeEventId,
+  activeEventId: initialActiveEventId,
   onActiveEventIdChange
 }: WeekViewProps) => {
   console.log({
@@ -63,6 +64,7 @@ export const WeekView = ({
   })
   const startingTime = hoursToDisplay[0]
   const [time, ready] = useTime(10000)
+  const [activeEventId, setActiveEventId] = useState<string | undefined>(initialActiveEventId)
 
   const { start, end } = computeStartAndEndOfWeek(week, startOfWeek)
   const days = dateRange(start, end)
@@ -74,6 +76,11 @@ export const WeekView = ({
       style={{ height: i === 0 ? HEIGHT_PER_HOUR / 2 : HEIGHT_PER_HOUR }}
     />
   ))
+
+  const updateActiveEventId = (eventId: string | undefined) => {
+    setActiveEventId(eventId)
+    onActiveEventIdChange(eventId)
+  }
 
   return (
     <div className="max-h-[calc(100vh-145px)] overflow-y-scroll">
@@ -120,7 +127,7 @@ export const WeekView = ({
                   key={event.uuid}
                   title={event.title}
                   open={event.uuid === activeEventId}
-                  onOpenChange={(open) => !open && onActiveEventIdChange(undefined)}
+                  onOpenChange={(open) => !open && updateActiveEventId(undefined)}
                   trigger={
                     <div>
                       <EventItem
@@ -128,7 +135,7 @@ export const WeekView = ({
                         event={event}
                         startingTime={startingTime}
                         isActive={event.uuid === activeEventId}
-                        onClick={() => onActiveEventIdChange(event.uuid)}
+                        onClick={() => updateActiveEventId(event.uuid)}
                       />
                     </div>
                   }

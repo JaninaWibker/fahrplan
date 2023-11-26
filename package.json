@@ -10,7 +10,7 @@
     "export": "next export"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-popover": "^1.0.7",
     "cal-parser": "^1.0.2",
     "clsx": "^2.0.0",
     "lucide-react": "0.259.0",
