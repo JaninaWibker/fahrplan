@@ -1,4 +1,5 @@
 import { clsx } from 'clsx'
+import { EventDetails } from '../EventDetails'
 import type { Event } from '@/utils/ical'
 import { formatTime, type DaysOfTheWeek, isSameDay, computeStartAndEndOfWeek, dateRange } from '@/utils/date'
 import { HEIGHT_PER_HOUR } from '@/utils/constants'
@@ -6,6 +7,7 @@ import { calculateStartingPositionFromDate } from '@/utils/events'
 import { useTime } from '@/utils/useTime'
 import { TimeAxis } from '@/components/week-view/TimeAxis'
 import { EventItem } from '@/components/week-view/EventItem'
+import { Modal } from '@/components/week-view/Modal'
 
 type WeekViewProps = {
   currentDate: Date
@@ -105,12 +107,22 @@ export const WeekView = ({
             <div key={`day-${i}`} className="relative">
               {hourDividers}
               {events.map((event) => (
-                <EventItem
+                <Modal
                   key={event.uuid}
-                  event={event}
-                  startingTime={startingTime}
-                  onClick={() => onActiveEventIdChange(event.uuid)}
-                />
+                  title={event.title}
+                  open={event.uuid === activeEventId}
+                  onOpenChange={(open) => !open && onActiveEventIdChange(undefined)}
+                  trigger={
+                    <EventItem
+                      key={event.uuid}
+                      event={event}
+                      startingTime={startingTime}
+                      onClick={() => onActiveEventIdChange(event.uuid)}
+                    />
+                  }
+                >
+                  <EventDetails event={event} />
+                </Modal>
               ))}
             </div>
           ))}
