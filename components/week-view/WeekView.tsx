@@ -10,9 +10,21 @@ import { EventItem } from '@/components/week-view/EventItem'
 import { Modal } from '@/components/week-view/Modal'
 
 type WeekViewProps = {
-  currentDate: Date
+  /**
+   * The date of a day in the week to display
+   */
+  week: Date
+  /**
+   * For each day of the week an array of events that occur on that day
+   */
   eventsPerWeekDay: Event[][]
+  /**
+   * Indicates whether a day has any events or not
+   */
   activeDays: boolean[]
+  /**
+   * Indicatas which day is used as the start of the week
+   */
   startOfWeek: DaysOfTheWeek
   /**
    * List of hours to display.
@@ -34,7 +46,7 @@ type WeekViewProps = {
 }
 
 export const WeekView = ({
-  currentDate,
+  week,
   eventsPerWeekDay,
   activeDays,
   startOfWeek,
@@ -43,18 +55,16 @@ export const WeekView = ({
   onActiveEventIdChange
 }: WeekViewProps) => {
   console.log({
-    currentDate,
+    week,
     eventsPerWeekDay,
     activeDays,
     startOfWeek,
-    hoursToDisplay,
-    activeEventId,
-    onActiveEventIdChange
+    hoursToDisplay
   })
   const startingTime = hoursToDisplay[0]
   const [time, ready] = useTime(10000)
 
-  const { start, end } = computeStartAndEndOfWeek(currentDate, startOfWeek)
+  const { start, end } = computeStartAndEndOfWeek(week, startOfWeek)
   const days = dateRange(start, end)
 
   const hourDividers = hoursToDisplay.map((_, i) => (
@@ -81,8 +91,7 @@ export const WeekView = ({
             <div className="h-1 w-[72px] shrink-0 bg-pink-200"></div>
             <div className="grid h-1 grow grid-cols-7 divide-x-[2px] px-[2px]">
               {days.map((day, i) => {
-                // TODO: use time here instead of currentDate, this just makes debugging a bit easier right now
-                const highlighted = isSameDay(day, currentDate)
+                const highlighted = isSameDay(day, time)
                 return (
                   <div
                     key={`timeline-day-${i}`}
@@ -113,12 +122,15 @@ export const WeekView = ({
                   open={event.uuid === activeEventId}
                   onOpenChange={(open) => !open && onActiveEventIdChange(undefined)}
                   trigger={
-                    <EventItem
-                      key={event.uuid}
-                      event={event}
-                      startingTime={startingTime}
-                      onClick={() => onActiveEventIdChange(event.uuid)}
-                    />
+                    <div>
+                      <EventItem
+                        key={event.uuid}
+                        event={event}
+                        startingTime={startingTime}
+                        isActive={event.uuid === activeEventId}
+                        onClick={() => onActiveEventIdChange(event.uuid)}
+                      />
+                    </div>
                   }
                 >
                   <EventDetails event={event} />

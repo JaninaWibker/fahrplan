@@ -7,7 +7,7 @@ import { calculateHoursFromEvents } from '@/utils/events'
 import { DayViewThingie } from '@/components/day-view'
 import { WeekViewThingie } from '@/components/week-view'
 
-const USE_WEEK_VIEW = true
+const USE_WEEK_VIEW = true // TODO: somehow make this dependant on screen size (width)
 
 type MainProps = {
   startingDay: Date
