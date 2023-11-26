@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import { Modal } from '@/components/Modal'
 import { EventDetails } from '@/components/EventDetails'
-import { EventItem } from '@/components/EventItem'
+import { Modal } from '@/components/day-view/Modal'
+import { EventItem } from '@/components/day-view/EventItem'
 import { TimeAxis } from '@/components/day-view/TimeAxis'
 import { useTime } from '@/utils/useTime'
 import type { Event } from '@/utils/ical'

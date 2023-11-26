@@ -5,6 +5,7 @@ import { HEIGHT_PER_HOUR } from '@/utils/constants'
 import { calculateStartingPositionFromDate } from '@/utils/events'
 import { useTime } from '@/utils/useTime'
 import { TimeAxis } from '@/components/week-view/TimeAxis'
+import { EventItem } from '@/components/week-view/EventItem'
 
 type WeekViewProps = {
   currentDate: Date
@@ -56,7 +57,7 @@ export const WeekView = ({
 
   const hourDividers = hoursToDisplay.map((_, i) => (
     <div
-      key={i}
+      key={`hour-${i}`}
       className="border-t border-gray-100"
       style={{ height: i === 0 ? HEIGHT_PER_HOUR / 2 : HEIGHT_PER_HOUR }}
     />
@@ -81,7 +82,10 @@ export const WeekView = ({
                 // TODO: use time here instead of currentDate, this just makes debugging a bit easier right now
                 const highlighted = isSameDay(day, currentDate)
                 return (
-                  <div key={i} className={clsx('h-1 w-full', highlighted ? 'relative bg-pink-500' : 'bg-pink-200')}>
+                  <div
+                    key={`timeline-day-${i}`}
+                    className={clsx('h-1 w-full', highlighted ? 'relative z-10 bg-pink-500' : 'bg-pink-200')}
+                  >
                     {highlighted ? (
                       <div className="absolute left-[-8px] top-[-5px] h-[14px] w-[14px] rounded-full bg-pink-500"></div>
                     ) : null}
@@ -95,15 +99,21 @@ export const WeekView = ({
           </div>
         ) : null}
 
-        {/* day columns */}
+        {/* day columns and events */}
         <div className="grid w-full grid-cols-7 divide-x-[2px] divide-solid divide-gray-200 border-x-[2px] border-gray-200">
-          <div className="">{hourDividers}</div>
-          <div className="">{hourDividers}</div>
-          <div className="">{hourDividers}</div>
-          <div className="">{hourDividers}</div>
-          <div className="">{hourDividers}</div>
-          <div className="">{hourDividers}</div>
-          <div className="">{hourDividers}</div>
+          {eventsPerWeekDay.map((events, i) => (
+            <div key={`day-${i}`} className="relative">
+              {hourDividers}
+              {events.map((event) => (
+                <EventItem
+                  key={event.uuid}
+                  event={event}
+                  startingTime={startingTime}
+                  onClick={() => onActiveEventIdChange(event.uuid)}
+                />
+              ))}
+            </div>
+          ))}
         </div>
 
         {/* current time */}
