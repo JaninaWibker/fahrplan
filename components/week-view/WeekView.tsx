@@ -1,6 +1,10 @@
+import { clsx } from 'clsx'
 import type { Event } from '@/utils/ical'
-import type { DaysOfTheWeek } from '@/utils/date'
-import { TimeAxis } from '@/components/TimeAxis'
+import { formatTime, type DaysOfTheWeek, isSameDay, computeStartAndEndOfWeek, dateRange } from '@/utils/date'
+import { HEIGHT_PER_HOUR } from '@/utils/constants'
+import { calculateStartingPositionFromDate } from '@/utils/events'
+import { useTime } from '@/utils/useTime'
+import { TimeAxis } from '@/components/week-view/TimeAxis'
 
 type WeekViewProps = {
   currentDate: Date
@@ -44,26 +48,76 @@ export const WeekView = ({
     activeEventId,
     onActiveEventIdChange
   })
+  const startingTime = hoursToDisplay[0]
+  const [time, ready] = useTime(10000)
+
+  const { start, end } = computeStartAndEndOfWeek(currentDate, startOfWeek)
+  const days = dateRange(start, end)
+
+  const hourDividers = hoursToDisplay.map((_, i) => (
+    <div
+      key={i}
+      className="border-t border-gray-100"
+      style={{ height: i === 0 ? HEIGHT_PER_HOUR / 2 : HEIGHT_PER_HOUR }}
+    />
+  ))
+
   return (
-    <div className={`flex max-h-[calc(100vh-145px)] overflow-y-scroll`}>
-      {/* time axis */}
-      <div className="h-fit w-[72px] shrink-0">
-        <TimeAxis hours={hoursToDisplay} />
-      </div>
+    <div className="max-h-[calc(100vh-145px)] overflow-y-scroll">
+      <div className="relative flex">
+        {/* time axis */}
+        <div className="h-fit w-[72px] shrink-0">
+          <TimeAxis hours={hoursToDisplay} />
+        </div>
 
-      {/* day columns */}
-      <div className="grid w-full grid-cols-7 divide-x-[2px] divide-solid divide-gray-200 border-x-[2px] border-gray-200">
-        <div className="">1</div>
-        <div className="">2</div>
-        <div className="">3</div>
-        <div className="">4</div>
-        <div className="">5</div>
-        <div className="">6</div>
-        <div className="">7</div>
-      </div>
+        {ready ? (
+          <div
+            className="absolute flex h-1 w-full"
+            style={{ top: calculateStartingPositionFromDate(startingTime, time) - 2 }}
+          >
+            <div className="h-1 w-[72px] shrink-0 bg-pink-200"></div>
+            <div className="grid h-1 grow grid-cols-7 divide-x-[2px] px-[2px]">
+              {days.map((day, i) => {
+                // TODO: use time here instead of currentDate, this just makes debugging a bit easier right now
+                const highlighted = isSameDay(day, currentDate)
+                return (
+                  <div key={i} className={clsx('h-1 w-full', highlighted ? 'relative bg-pink-500' : 'bg-pink-200')}>
+                    {highlighted ? (
+                      <div className="absolute left-[-8px] top-[-5px] h-[14px] w-[14px] rounded-full bg-pink-500"></div>
+                    ) : null}
+                  </div>
+                )
+              })}
+            </div>
+            <div className="h-1 w-[72px] shrink-0">
+              <div className="h-1 w-[8px] rounded-r bg-pink-200"></div>
+            </div>
+          </div>
+        ) : null}
 
-      {/* current time */}
-      <div className="h-fit w-[72px] shrink-0">2</div>
+        {/* day columns */}
+        <div className="grid w-full grid-cols-7 divide-x-[2px] divide-solid divide-gray-200 border-x-[2px] border-gray-200">
+          <div className="">{hourDividers}</div>
+          <div className="">{hourDividers}</div>
+          <div className="">{hourDividers}</div>
+          <div className="">{hourDividers}</div>
+          <div className="">{hourDividers}</div>
+          <div className="">{hourDividers}</div>
+          <div className="">{hourDividers}</div>
+        </div>
+
+        {/* current time */}
+        <div className="h-fit w-[72px] shrink-0">
+          {ready ? (
+            <div
+              className="absolute ml-2 bg-white px-1 text-sm font-semibold text-pink-400"
+              style={{ top: calculateStartingPositionFromDate(startingTime, time) - 10 }}
+            >
+              {formatTime(time)}
+            </div>
+          ) : null}
+        </div>
+      </div>
     </div>
   )
 }
