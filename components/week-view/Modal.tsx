@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import type { PropsWithChildren, ReactNode } from 'react'
-import { Drawer } from 'vaul'
+import * as Popover from '@radix-ui/react-popover'
 
 type ModalProps = PropsWithChildren<{
   title: string
@@ -12,31 +11,25 @@ type ModalProps = PropsWithChildren<{
 }>
 
 export const Modal = ({ title, trigger, children, open, onOpenChange }: ModalProps) => {
-  const [snap, setSnap] = useState<string | number | null>('196px')
-
   return (
-    <Drawer.Root
-      shouldScaleBackground
-      snapPoints={['196px', 1]}
-      activeSnapPoint={snap}
-      setActiveSnapPoint={setSnap}
-      fadeFromIndex={0}
-      open={open}
-      onOpenChange={onOpenChange}
-    >
-      <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
-      <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-        <Drawer.Content className="fixed inset-x-0 bottom-0 mt-24 flex h-full max-h-[97vh] flex-col rounded-t-[10px] bg-gray-100 focus:outline-none">
-          <div className="flex-1 rounded-t-[10px] bg-white p-4">
-            <div className="mx-auto mb-4 h-1.5 w-12 shrink-0 rounded-full bg-gray-300" />
+    <Popover.Root open={open} onOpenChange={onOpenChange}>
+      <Popover.Trigger asChild>{trigger}</Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          className="z-20 mb-3 flex max-h-[400px] w-[320px] flex-col overflow-y-scroll rounded-lg bg-white shadow-lg outline outline-[3px] outline-pink-300"
+          side="left"
+          align="start"
+          sideOffset={10}
+          alignOffset={-12}
+        >
+          <div className="flex-1 rounded-xl bg-white p-4">
             <div className="mx-auto max-w-md">
-              <Drawer.Title className="mb-4 font-medium">{title}</Drawer.Title>
+              <h2 className="mb-4 font-medium">{title}</h2>
               {children}
             </div>
           </div>
-        </Drawer.Content>
-      </Drawer.Portal>
-    </Drawer.Root>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   )
 }
