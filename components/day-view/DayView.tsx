@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useState } from 'react'
 import { EventDetails } from '@/components/EventDetails'
 import { Modal } from '@/components/day-view/Modal'
 import { EventItem } from '@/components/day-view/EventItem'
@@ -39,11 +39,18 @@ export const DayView = ({
   hoursToDisplay,
   currentDate,
   filteredEvents,
-  activeEventId,
+  activeEventId: initialActiveEventId,
   onActiveEventIdChange
 }: DayViewProps) => {
   const startingTime = hoursToDisplay[0]
   const [time, ready] = useTime(10000)
+  const [activeEventId, setActiveEventId] = useState<string | undefined>(initialActiveEventId)
+
+  // TODO: could probably move all of this to Main.tsx
+  const updateActiveEventId = (eventId: string | undefined) => {
+    setActiveEventId(eventId)
+    onActiveEventIdChange(eventId)
+  }
 
   return (
     <div className="relative flex w-full overflow-y-scroll" style={{ height: 'calc(100vh - 108px)' }}>
@@ -65,7 +72,7 @@ export const DayView = ({
                   event={event}
                   startingTime={startingTime}
                   isActive={event.uuid === activeEventId}
-                  onClick={() => onActiveEventIdChange(event.uuid)}
+                  onClick={() => updateActiveEventId(event.uuid)}
                 />
               </div>
             }

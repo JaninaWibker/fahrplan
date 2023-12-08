@@ -27,6 +27,15 @@ type EventItemProps = {
 }
 
 export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemProps) => {
+  // duration calculation should stop at the end of the day as these events are split into multiple, thus simply subtracting start from end is not enough
+  const duration = calculateDurationFromDate(event.start, event.end)
+
+  // - `full`: title and location can be 2 lines long
+  // - `medium`: location can be 2 lines long
+  // - `short`: merge starting time and location into one line, omit ending time
+  // - `shortest`: merge title and starting time, omit ending time and location
+  const detailLevel = duration >= 2 ? 'full' : duration >= 1.5 ? 'medium' : duration >= 1 ? 'short' : 'shortest'
+
   return (
     <div
       className="absolute"
@@ -44,19 +53,39 @@ export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemP
           onClick={onClick}
           data-priority={event.priority}
           data-state={isActive ? 'active' : 'inactive'}
-          className={clsx('h-full w-full rounded-lg px-3 py-2', COLORS_PER_PRIORITY[event.priority], {
+          className={clsx('block h-full w-full cursor-pointer rounded-lg py-1.5', COLORS_PER_PRIORITY[event.priority], {
             'outline outline-[3px] outline-white': isActive || event.maxPriority > 1,
             'z-10': isActive,
-            'z-0': !isActive
+            'z-0': !isActive,
+            'pl-3 pr-2': detailLevel === 'full',
+            'pl-3 pr-1': detailLevel === 'medium' || detailLevel === 'short' || detailLevel === 'shortest'
           })}
         >
-          <div className="flex items-center truncate text-sm font-semibold">
-            {event.title}
-            {event.verified ? <BadgeCheck className="h-4 w-5 stroke-[2.5px] pl-1" /> : null}
+          <div className="flex items-start">
+            {detailLevel !== 'shortest' ? (
+              <span
+                className={clsx('text-sm font-semibold', {
+                  'text-ellipsis hyphens-auto break-words line-clamp-2': detailLevel === 'full',
+                  'truncate ': detailLevel === 'medium' || detailLevel === 'short'
+                })}
+              >
+                {event.title}
+              </span>
+            ) : (
+              <span className="truncate text-sm">
+                <span className="font-semibold">{event.title}</span>
+                <span className="">{` · ${formatTime(event.start)}`}</span>
+              </span>
+            )}
+            {event.verified ? <BadgeCheck className="ml-1 mt-0.5 h-4 w-4 shrink-0 stroke-[2.5px]" /> : null}
           </div>
-          <div className="text-sm">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
-          {calculateDurationFromDate(event.start, event.end) > 1 ? (
-            <div className="truncate text-xs">{event.shortLocation}</div>
+          {detailLevel === 'full' || detailLevel === 'medium' ? (
+            <>
+              <div className="text-xs">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
+              <div className="line-clamp-2 text-ellipsis hyphens-auto break-words text-xs">{event.shortLocation}</div>
+            </>
+          ) : detailLevel === 'short' ? (
+            <div className="truncate text-xs">{`${formatTime(event.start)} · ${event.shortLocation}`}</div>
           ) : null}
         </div>
       </Popover.Anchor>

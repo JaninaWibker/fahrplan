@@ -16,7 +16,7 @@ export const Modal = ({ title, trigger, children, open, onOpenChange }: ModalPro
       <Popover.Trigger asChild>{trigger}</Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
-          className="z-20 mb-3 flex max-h-[400px] w-[320px] flex-col overflow-y-scroll rounded-lg bg-white shadow-lg outline outline-[3px] outline-pink-300"
+          className="z-20 mb-3 flex max-h-[400px] w-[352px] flex-col overflow-y-scroll rounded-lg bg-white shadow-lg outline outline-[3px] outline-pink-300"
           side="left"
           align="start"
           sideOffset={10}
