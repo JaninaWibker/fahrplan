@@ -7,16 +7,17 @@ import { BadgeCheck } from 'lucide-react'
 import type { Event } from '@/utils/ical'
 import { formatTime } from '@/utils/date'
 import { calculateDurationFromDate, calculateHeightFromDate, calculateStartingPositionFromDate } from '@/utils/events'
-import { MARGIN_EVENTS } from '@/utils/constants'
+import type { AccentColorBasedStyle } from '@/utils/constants'
+import { ACCENT_COLOR_VARIANTS, MARGIN_EVENTS } from '@/utils/constants'
 
-export const COLORS_PER_PRIORITY: Record<number, string> = {
-  1: 'bg-blue-100 text-blue-700 hover:bg-blue-200 data-[state="active"]:bg-blue-200',
-  2: 'bg-pink-100 text-pink-700 hover:bg-pink-200 data-[state="active"]:bg-pink-200',
-  3: 'bg-green-100 text-green-700 hover:bg-green-200 data-[state="active"]:bg-green-200',
-  4: 'bg-purple-100 text-purple-700 hover:bg-purple-200 data-[state="active"]:bg-purple-200',
-  5: 'bg-orange-100 text-orange-700 hover:bg-orange-200 data-[state="active"]:bg-orange-200',
-  6: 'bg-sky-100 text-sky-700 hover:bg-sky-200 data-[state="active"]:bg-sky-200',
-  7: 'bg-fuchsia-100 text-fuchsia-700 hover:bg-fuchsia-200 data-[state="active"]:bg-fuchsia-200'
+export const COLORS_PER_PRIORITY: AccentColorBasedStyle = {
+  blue: 'bg-blue-100 text-blue-700 hover:bg-blue-200 data-[state="active"]:bg-blue-200',
+  pink: 'bg-pink-100 text-pink-700 hover:bg-pink-200 data-[state="active"]:bg-pink-200',
+  green: 'bg-green-100 text-green-700 hover:bg-green-200 data-[state="active"]:bg-green-200',
+  purple: 'bg-purple-100 text-purple-700 hover:bg-purple-200 data-[state="active"]:bg-purple-200',
+  orange: 'bg-orange-100 text-orange-700 hover:bg-orange-200 data-[state="active"]:bg-orange-200',
+  sky: 'bg-sky-100 text-sky-700 hover:bg-sky-200 data-[state="active"]:bg-sky-200',
+  fuchsia: 'bg-fuchsia-100 text-fuchsia-700 hover:bg-fuchsia-200 data-[state="active"]:bg-fuchsia-200'
 }
 
 type EventItemProps = {
@@ -53,13 +54,17 @@ export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemP
           onClick={onClick}
           data-priority={event.priority}
           data-state={isActive ? 'active' : 'inactive'}
-          className={clsx('block h-full w-full cursor-pointer rounded-lg py-1.5', COLORS_PER_PRIORITY[event.priority], {
-            'outline outline-[3px] outline-white': isActive || event.maxPriority > 1,
-            'z-10': isActive,
-            'z-0': !isActive,
-            'pl-3 pr-2': detailLevel === 'full',
-            'pl-3 pr-1': detailLevel === 'medium' || detailLevel === 'short' || detailLevel === 'shortest'
-          })}
+          className={clsx(
+            'block h-full w-full cursor-pointer rounded-lg py-1.5',
+            COLORS_PER_PRIORITY[ACCENT_COLOR_VARIANTS[event.priority - 1]],
+            {
+              'outline outline-[3px] outline-white': isActive || event.maxPriority > 1,
+              'z-10': isActive,
+              'z-0': !isActive,
+              'pl-3 pr-2': detailLevel === 'full',
+              'pl-3 pr-1': detailLevel === 'medium' || detailLevel === 'short' || detailLevel === 'shortest'
+            }
+          )}
         >
           <div className="flex items-start">
             {detailLevel !== 'shortest' ? (

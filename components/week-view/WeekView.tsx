@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { EventDetails } from '../EventDetails'
 import type { Event } from '@/utils/ical'
 import { formatTime, type DaysOfTheWeek, isSameDay, computeStartAndEndOfWeek, dateRange } from '@/utils/date'
-import { HEIGHT_PER_HOUR } from '@/utils/constants'
+import { ACCENT_COLOR_VARIANTS, HEIGHT_PER_HOUR } from '@/utils/constants'
 import { calculateStartingPositionFromDate } from '@/utils/events'
 import { useTime } from '@/utils/useTime'
 import { TimeAxis } from '@/components/week-view/TimeAxis'
@@ -126,6 +126,8 @@ export const WeekView = ({
                 <Modal
                   key={event.uuid}
                   title={event.title}
+                  verified={event.verified}
+                  accentColorVariant={ACCENT_COLOR_VARIANTS[event.priority - 1]}
                   open={event.uuid === activeEventId}
                   onOpenChange={(open) => !open && updateActiveEventId(undefined)}
                   trigger={
@@ -140,7 +142,7 @@ export const WeekView = ({
                     </div>
                   }
                 >
-                  <EventDetails event={event} />
+                  <EventDetails event={event} accentColorVariant={ACCENT_COLOR_VARIANTS[event.priority - 1]} withDate />
                 </Modal>
               ))}
             </div>
