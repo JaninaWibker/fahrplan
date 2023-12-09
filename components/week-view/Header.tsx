@@ -22,6 +22,7 @@ const RoundedOutline = ({ children, ...rest }: NativeProps<'div'>) => (
   </div>
 )
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RoundedOutlineButton = ({ children, ...rest }: NativeProps<'button'>) => (
   <button
     className="flex h-9 min-w-24 items-center justify-center rounded-full border-2 border-pink-200 px-4 text-sm font-semibold"
@@ -60,7 +61,7 @@ export const Header = ({ date, activeDays, startOfWeek, onPrev, onNext, canPrev,
               <ChevronRight />
             </button>
           </RoundedOutline>
-          <RoundedOutlineButton onClick={undefined}>Today</RoundedOutlineButton>
+          {/* <RoundedOutlineButton onClick={undefined}>Today</RoundedOutlineButton> */}
           <span className="text-sm font-semibold">Week {getWeekNumber(date)}</span>
         </div>
         <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-semibold">Fahrplan</h1>
