@@ -1,25 +1,19 @@
 import { useEffect, useState } from 'react'
 
-type MediaQueryResult = {
-  ready: boolean
-  state: boolean
-}
-
 // MIT License
 // Copyright (c) 2020 Julien CARON
 // https://github.com/juliencrn/usehooks-ts
 // https://usehooks-ts.com/react-hook/use-media-query
-export const useMediaQuery = (query: string): MediaQueryResult => {
-  // TODO: this doesn't really actually properly work with SSR
-  const getMatches = (query: string): MediaQueryResult => {
+export const useMediaQueryWithoutSSR = (query: string): boolean => {
+  const getMatches = (query: string): boolean => {
     // Prevents SSR issues
     if (typeof window !== 'undefined') {
-      return { ready: true, state: window.matchMedia(query).matches }
+      return window.matchMedia(query).matches
     }
-    return { ready: false, state: false }
+    return false
   }
 
-  const [matches, setMatches] = useState<MediaQueryResult>(getMatches(query))
+  const [matches, setMatches] = useState<boolean>(getMatches(query))
 
   function handleChange() {
     setMatches(getMatches(query))
@@ -41,4 +35,14 @@ export const useMediaQuery = (query: string): MediaQueryResult => {
   }, [query])
 
   return matches
+}
+
+export const useMediaQuery = (query: string) => {
+  const state = useMediaQueryWithoutSSR(query)
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    setReady(true)
+  }, [state])
+
+  return { ready, state: ready && state }
 }

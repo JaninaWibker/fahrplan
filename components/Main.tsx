@@ -29,7 +29,7 @@ export const Main = ({ startingDay, endingDay, initialDay, events, isWeekView }:
   const activeEventId = searchParams.get('event') || undefined
   const activeEvent = events.find((event) => event.uuid === activeEventId)
 
-  const { ready, state: isMobile } = useMediaQuery('screen and (min-width: 1px) and (max-width: 832px)')
+  const { state: isMobile } = useMediaQuery('screen and (min-width: 1px) and (max-width: 832px)')
 
   const onActiveEventIdChange = (eventId: string | undefined) => {
     if (eventId === undefined) {
@@ -46,8 +46,6 @@ export const Main = ({ startingDay, endingDay, initialDay, events, isWeekView }:
   const shouldUseDayView = isWeekView !== undefined ? !isWeekView : isMobile
 
   const DayOrWeekView = shouldUseDayView ? DayViewThingie : WeekViewThingie
-
-  console.log('ready', ready)
 
   return (
     <DayOrWeekView
