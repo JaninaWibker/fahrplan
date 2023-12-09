@@ -17,13 +17,13 @@ const MODAL_STYLE_PER_ACCENT_COLOR_VARIANT = {
 } as const satisfies AccentColorBasedStyle
 
 const CLOSE_BTN_STYLE_PER_ACCENT_COLOR_VARIANT = {
-  blue: 'text-blue-600 hover:bg-blue-100',
-  pink: 'text-pink-600 hover:bg-pink-100',
-  green: 'text-green-600 hover:bg-green-100',
-  purple: 'text-purple-600 hover:bg-purple-100',
-  orange: 'text-orange-600 hover:bg-orange-100',
-  sky: 'text-sky-600 hover:bg-sky-100',
-  fuchsia: 'text-fuchsia-600 hover:bg-fuchsia-100'
+  blue: 'text-blue-600 hover:bg-blue-100 focus:bg-blue-100',
+  pink: 'text-pink-600 hover:bg-pink-100 focus:bg-pink-100',
+  green: 'text-green-600 hover:bg-green-100 focus:bg-green-100',
+  purple: 'text-purple-600 hover:bg-purple-100 focus:bg-purple-100',
+  orange: 'text-orange-600 hover:bg-orange-100 focus:bg-orange-100',
+  sky: 'text-sky-600 hover:bg-sky-100 focus:bg-sky-100',
+  fuchsia: 'text-fuchsia-600 hover:bg-fuchsia-100 focus:bg-fuchsia-100'
 } as const satisfies AccentColorBasedStyle
 
 type ModalProps = PropsWithChildren<{
@@ -67,7 +67,7 @@ export const Modal = ({
                 </div>
                 <Popover.Close
                   className={clsx(
-                    '-mr-1 -mt-1 rounded-full p-1',
+                    '-mr-1 -mt-1 rounded-full p-1 focus:outline-none',
                     CLOSE_BTN_STYLE_PER_ACCENT_COLOR_VARIANT[accentColorVariant]
                   )}
                   aria-label="Close"
