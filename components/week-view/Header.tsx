@@ -65,7 +65,7 @@ export const Header = ({ date, activeDays, startOfWeek, onPrev, onNext, canPrev,
         </div>
         <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-semibold">Fahrplan</h1>
         <div className="flex items-center gap-4">
-          <RoundedOutlineButton onClick={undefined}>More Information</RoundedOutlineButton>
+          {/* <RoundedOutlineButton onClick={undefined}>More Information</RoundedOutlineButton> */}
         </div>
       </div>
 
