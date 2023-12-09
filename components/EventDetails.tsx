@@ -39,7 +39,8 @@ export const EventDetails = ({ event, withDate = false, accentColorVariant = 'pi
       <div className="flex flex-row items-center gap-4 py-2">
         <CalendarClock className="h-7 w-6 shrink-0 text-gray-400" aria-label="Uhrzeit" />
         <span>
-          {formatTime(event.start)} - {formatTime(event.end)} {withDate ? `(${formatDate(event.start)})` : null}
+          {formatTime(event.displayStart)} - {formatTime(event.displayEnd)}{' '}
+          {withDate ? `(${formatDate(event.displayStart)})` : null}
         </span>
       </div>
       {event.description ? (

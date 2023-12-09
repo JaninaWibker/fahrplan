@@ -49,19 +49,11 @@ type WeekViewProps = {
 export const WeekView = ({
   week,
   eventsPerWeekDay,
-  activeDays,
   startOfWeek,
   hoursToDisplay,
   activeEventId: initialActiveEventId,
   onActiveEventIdChange
 }: WeekViewProps) => {
-  console.log({
-    week,
-    eventsPerWeekDay,
-    activeDays,
-    startOfWeek,
-    hoursToDisplay
-  })
   const startingTime = hoursToDisplay[0]
   const [time, ready] = useTime(10000)
   const [activeEventId, setActiveEventId] = useState<string | undefined>(initialActiveEventId)
@@ -124,7 +116,7 @@ export const WeekView = ({
               {hourDividers}
               {events.map((event) => (
                 <Modal
-                  key={event.uuid}
+                  key={event.multipart !== null ? event.uuid + '-' + event.multipart.index : event.uuid}
                   title={event.title}
                   verified={event.verified}
                   accentColorVariant={ACCENT_COLOR_VARIANTS[event.priority - 1]}
@@ -133,7 +125,7 @@ export const WeekView = ({
                   trigger={
                     <div>
                       <EventItem
-                        key={event.uuid}
+                        key={event.multipart !== null ? event.uuid + '-' + event.multipart.index : event.uuid}
                         event={event}
                         startingTime={startingTime}
                         isActive={event.uuid === activeEventId}
