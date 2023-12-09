@@ -23,7 +23,15 @@ const Home = async () => {
     return <Empty />
   }
 
-  return <Main startingDay={startingDay} endingDay={endingDay} initialDay={initialDay} events={filteredEvents} />
+  return (
+    <Main
+      startingDay={startingDay}
+      endingDay={endingDay}
+      initialDay={initialDay}
+      events={filteredEvents}
+      isWeekView={true}
+    />
+  )
 }
 
 export default Home
