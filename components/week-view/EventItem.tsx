@@ -79,18 +79,18 @@ export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemP
             ) : (
               <span className="truncate text-sm">
                 <span className="font-semibold">{event.title}</span>
-                <span className="">{` · ${formatTime(event.start)}`}</span>
+                <span className="">{` · ${formatTime(event.displayStart)}`}</span>
               </span>
             )}
             {event.verified ? <BadgeCheck className="ml-1 mt-0.5 h-4 w-4 shrink-0 stroke-[2.5px]" /> : null}
           </div>
           {detailLevel === 'full' || detailLevel === 'medium' ? (
             <>
-              <div className="text-xs">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
+              <div className="text-xs">{`${formatTime(event.displayStart)} - ${formatTime(event.displayEnd)}`}</div>
               <div className="line-clamp-2 text-ellipsis hyphens-auto break-words text-xs">{event.shortLocation}</div>
             </>
           ) : detailLevel === 'short' ? (
-            <div className="truncate text-xs">{`${formatTime(event.start)} · ${event.shortLocation}`}</div>
+            <div className="truncate text-xs">{`${formatTime(event.displayStart)} · ${event.shortLocation}`}</div>
           ) : null}
         </div>
       </Popover.Anchor>

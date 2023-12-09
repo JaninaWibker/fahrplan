@@ -36,17 +36,38 @@ const clampDay = (min: Date, max: Date, day: Date) => {
   return upperBound
 }
 
+export const clampDate = (min: Date, max: Date, date: Date) => {
+  const lowerBound = date.getTime() < min.getTime() ? min : date
+  const upperBound = lowerBound.getTime() > max.getTime() ? max : lowerBound
+  return upperBound
+}
+
+export const nextDay = (day: Date) => {
+  const next = new Date(day)
+  next.setDate(day.getDate() + 1)
+  return next
+}
+
+export const previousDay = (day: Date) => {
+  const previous = new Date(day)
+  previous.setDate(day.getDate() - 1)
+  return previous
+}
+
 /**
  * Compute a range of days between `start` and `end` (inclusive)
  */
 export const dateRange = (start: Date, end: Date) => {
   const days = []
   const currentDay = new Date(start)
+  currentDay.setHours(0, 0, 0, 0)
   while (!isSameDay(currentDay, end)) {
     days.push(new Date(currentDay))
     currentDay.setDate(currentDay.getDate() + 1)
   }
-  days.push(new Date(end))
+  const newEnd = new Date(end)
+  newEnd.setHours(0, 0, 0, 0)
+  days.push(new Date(newEnd))
   return days
 }
 

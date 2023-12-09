@@ -47,7 +47,7 @@ export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemP
         {event.title}
         {event.verified ? <BadgeCheck className="h-4 w-5 stroke-[2.5px] pl-1" /> : null}
       </div>
-      <div className="text-sm">{`${formatTime(event.start)} - ${formatTime(event.end)}`}</div>
+      <div className="text-sm">{`${formatTime(event.displayStart)} - ${formatTime(event.displayEnd)}`}</div>
       {calculateDurationFromDate(event.start, event.end) > 1 ? (
         <div className="truncate text-xs">{event.shortLocation}</div>
       ) : null}

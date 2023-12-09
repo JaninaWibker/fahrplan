@@ -64,7 +64,7 @@ export const DayView = ({
       <div className="relative grow">
         {filteredEvents.map((event) => (
           <Modal
-            key={event.uuid}
+            key={event.multipart !== null ? event.uuid + '-' + event.multipart.index : event.uuid}
             title={event.title}
             trigger={
               <div>
