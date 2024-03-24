@@ -7,17 +7,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          version: 7
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+
 
       - name: Create temporary .env file
         run: |
-          echo "ICAL_URL=https://raw.githubusercontent.com/JannikWibker/fahrplan/main/public/example.ics" > .env
+          echo "ICAL_URL=https://raw.githubusercontent.com/JaninaWibker/fahrplan/main/public/example.ics" > .env
 
       - run: pnpm install
       - run: pnpm lint
