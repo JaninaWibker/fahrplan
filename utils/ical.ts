@@ -1,4 +1,4 @@
-import ical from 'cal-parser'
+import { parse, transform } from 'parse-ical'
 import { clampDate, dateRange, isSameDay, nextDay } from './date'
 
 export type Event = {
@@ -142,23 +142,23 @@ const load = (url: string): Promise<SerializedEvent[]> =>
   fetch(url, { next: { revalidate: 600 } })
     .then((res) => res.text())
     .then((text) => {
-      const { events: icalEvents } = ical.parseString(text)
+      const { events: icalEvents } = transform(parse(text))
 
       const events: (Omit<Event, 'priority' | 'maxPriority'> & { priority: null; maxPriority: null })[] =
         icalEvents.map((event) => {
-          const allDay = event.dtstart.params?.value === 'DATE' || event.dtend.params?.value === 'DATE'
-          const verified = event.summary.value.startsWith('*')
+          const allDay = event.start.isAllDay || event.end.isAllDay
+          const verified = event.title.startsWith('*')
 
           return {
-            uuid: event.uid.value,
-            title: verified ? event.summary.value.slice(1) : event.summary.value,
-            location: event.location ? event.location.value : null,
-            shortLocation: event.location ? shortenLocation(event.location.value) : null,
-            description: event.description ? event.description.value : null,
-            start: event.dtstart.value,
-            end: event.dtend.value,
-            displayStart: event.dtstart.value,
-            displayEnd: event.dtend.value,
+            uuid: event.uid,
+            title: verified ? event.title.slice(1) : event.title,
+            location: event.location ?? null,
+            shortLocation: event.location ? shortenLocation(event.location) : null,
+            description: event.description ? event.description : null,
+            start: event.start.date,
+            end: event.end.date,
+            displayStart: event.start.date,
+            displayEnd: event.end.date,
             color: null,
             allDay,
             verified,

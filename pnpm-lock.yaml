@@ -1,12 +1,13 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@radix-ui/react-popover':
     specifier: ^1.0.7
     version: 1.0.7(@types/react-dom@18.2.17)(@types/react@18.2.38)(react-dom@18.2.0)(react@18.2.0)
-  cal-parser:
-    specifier: ^1.0.2
-    version: 1.0.2
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
@@ -16,6 +17,9 @@ dependencies:
   next:
     specifier: ^13.5.6
     version: 13.5.6(react-dom@18.2.0)(react@18.2.0)
+  parse-ical:
+    specifier: ^1.0.2
+    version: 1.0.2
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -1191,13 +1195,6 @@ packages:
       streamsearch: 1.1.0
     dev: false
 
-  /cal-parser@1.0.2:
-    resolution: {integrity: sha512-wlQwcF0fl4eLclyGdncF9rcNNq0ipRYZGagG6h3LVgRXvCWE1fdMUaCLXwfC9YWoz9jKKbjQAq7TpO2Y3yrvmA==}
-    dependencies:
-      ical-date-parser: 4.0.0
-      rrule: 2.8.1
-    dev: false
-
   /call-bind@1.0.5:
     resolution: {integrity: sha512-C3nQxfFZxFRVoJoGKKI8y3MOEo129NQ+FgQ08iye+Mk4zNZZGdjfs06bVTr+DBSlA66Q2VEcMki/cUCP4SercQ==}
     dependencies:
@@ -2202,10 +2199,6 @@ packages:
     engines: {node: '>=14.18.0'}
     dev: true
 
-  /ical-date-parser@4.0.0:
-    resolution: {integrity: sha512-XRCK/FU1akC2ZaJOdKIeZI6BLLgzWUuE0pegSrrkEva89GOan5mNkLVqCU4EMhCJ9nkG5TLWdMXrVX1fNAkFzw==}
-    dev: false
-
   /ignore@5.3.0:
     resolution: {integrity: sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==}
     engines: {node: '>= 4'}
@@ -2851,6 +2844,12 @@ packages:
     dependencies:
       callsites: 3.1.0
     dev: true
+
+  /parse-ical@1.0.2:
+    resolution: {integrity: sha512-eLKz0SXIRyOBMCyhjghfhS1BTOHp9fdFBH+8+aOUFR2encxpdd3dtjwQTBgvk76L6T3OYGZ06e/hX8C+f7Np+w==}
+    dependencies:
+      rrule: 2.8.1
+    dev: false
 
   /path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
