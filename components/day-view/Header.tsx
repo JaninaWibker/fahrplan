@@ -24,7 +24,7 @@ export const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) 
           onClick={canPrev ? onPrev : undefined}
           disabled={!canPrev}
         >
-          <ChevronLeft className="h-8 w-8" />
+          <ChevronLeft className="size-8" />
         </button>
         <div className="grow text-center text-xl font-semibold">
           {date.toLocaleDateString('de-DE', { weekday: 'short' })} - {formatDate(date)}
@@ -34,7 +34,7 @@ export const Header = ({ date, onPrev, onNext, canPrev, canNext }: HeaderProps) 
           onClick={canNext ? onNext : undefined}
           disabled={!canNext}
         >
-          <ChevronRight className="h-8 w-8" />
+          <ChevronRight className="size-8" />
         </button>
       </div>
     </div>

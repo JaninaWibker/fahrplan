@@ -55,7 +55,7 @@ export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemP
           data-priority={event.priority}
           data-state={isActive ? 'active' : 'inactive'}
           className={clsx(
-            'block h-full w-full cursor-pointer rounded-lg py-1.5',
+            'block size-full cursor-pointer rounded-lg py-1.5',
             COLORS_PER_PRIORITY[ACCENT_COLOR_VARIANTS[event.priority - 1]],
             {
               'outline outline-[3px] outline-white': isActive || event.maxPriority > 1,
@@ -82,7 +82,7 @@ export const EventItem = ({ event, startingTime, isActive, onClick }: EventItemP
                 <span className="">{` · ${formatTime(event.displayStart)}`}</span>
               </span>
             )}
-            {event.verified ? <BadgeCheck className="ml-1 mt-0.5 h-4 w-4 shrink-0 stroke-[2.5px]" /> : null}
+            {event.verified ? <BadgeCheck className="ml-1 mt-0.5 size-4 shrink-0 stroke-[2.5px]" /> : null}
           </div>
           {detailLevel === 'full' || detailLevel === 'medium' ? (
             <>

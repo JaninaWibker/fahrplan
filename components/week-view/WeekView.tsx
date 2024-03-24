@@ -88,7 +88,7 @@ export const WeekView = ({
             style={{ top: calculateStartingPositionFromDate(startingTime, time) - 2 }}
           >
             <div className="h-1 w-[72px] shrink-0 bg-pink-200"></div>
-            <div className="grid h-1 grow grid-cols-7 divide-x-[2px] px-[2px]">
+            <div className="grid h-1 grow grid-cols-7 divide-x-2 px-[2px]">
               {days.map((day, i) => {
                 const highlighted = isSameDay(day, time)
                 return (
@@ -97,7 +97,7 @@ export const WeekView = ({
                     className={clsx('h-1 w-full', highlighted ? 'relative z-10 bg-pink-500' : 'bg-pink-200')}
                   >
                     {highlighted ? (
-                      <div className="absolute left-[-8px] top-[-5px] h-[14px] w-[14px] rounded-full bg-pink-500"></div>
+                      <div className="absolute left-[-8px] top-[-5px] size-[14px] rounded-full bg-pink-500"></div>
                     ) : null}
                   </div>
                 )
@@ -110,7 +110,7 @@ export const WeekView = ({
         ) : null}
 
         {/* day columns and events */}
-        <div className="grid w-full grid-cols-7 divide-x-[2px] divide-solid divide-gray-200 border-x-[2px] border-gray-200">
+        <div className="grid w-full grid-cols-7 divide-x-2 divide-solid divide-gray-200 border-x-2 border-gray-200">
           {eventsPerWeekDay.map((events, i) => (
             <div key={`day-${i}`} className="relative">
               {hourDividers}

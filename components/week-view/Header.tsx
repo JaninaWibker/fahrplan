@@ -75,7 +75,7 @@ export const Header = ({ date, activeDays, startOfWeek, onPrev, onNext, canPrev,
           <div key={i} className="flex w-full justify-center">
             <div
               className={clsx(
-                'flex items-center gap-2 rounded-full border-[2px] px-4',
+                'flex items-center gap-2 rounded-full border-2 px-4',
                 isToday && hasEvents && 'border-pink-300 bg-pink-400',
                 isToday && !hasEvents && 'border-pink-200 bg-pink-300',
                 !isToday && 'border-transparent'

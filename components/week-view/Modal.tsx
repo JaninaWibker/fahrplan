@@ -63,7 +63,7 @@ export const Modal = ({
               <div className="flex items-start justify-between">
                 <div className="flex items-start">
                   <h2 className="mb-4 font-medium">{title}</h2>
-                  {verified && <BadgeCheckIcon className="ml-1 mt-0.5 h-5 w-5 shrink-0 stroke-[2.5px]" />}
+                  {verified && <BadgeCheckIcon className="ml-1 mt-0.5 size-5 shrink-0 stroke-[2.5px]" />}
                 </div>
                 <Popover.Close
                   className={clsx(
@@ -72,7 +72,7 @@ export const Modal = ({
                   )}
                   aria-label="Close"
                 >
-                  <XIcon className="h-6 w-6" />
+                  <XIcon className="size-6" />
                 </Popover.Close>
               </div>
               {children}
