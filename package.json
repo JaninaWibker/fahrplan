@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.0.7",
-    "cal-parser": "^1.0.2",
     "clsx": "^2.0.0",
     "lucide-react": "0.259.0",
     "next": "^13.5.6",
+    "parse-ical": "^1.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "vaul": "^0.6.8"
