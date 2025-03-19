@@ -2,6 +2,8 @@
   "name": "fahrplan-ophase",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": "Janina Wibker",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
