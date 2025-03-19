@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # This is the place to do any modifications to the `.env` file that you require
       # The environment variables are required at **build time**, you cannot set them

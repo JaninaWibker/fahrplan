@@ -18,12 +18,12 @@ WORKDIR /app
 
 # timezones are always fun 🤡
 RUN apk add --no-cache tzdata
-ENV TZ Europe/Berlin
+ENV TZ="Europe/Berlin"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 # build the app
 RUN npm run build
 
@@ -43,13 +43,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/next.config.js ./next.config.js
 
 # timezones are always fun 🤡
 RUN apk add --no-cache tzdata
-ENV TZ Europe/Berlin
+ENV TZ="Europe/Berlin"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 USER nextjs
 
